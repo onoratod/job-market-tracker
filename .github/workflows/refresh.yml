@@ -1,0 +1,82 @@
+name: Refresh JOE listings
+
+# 11:00 UTC is 07:00 in New York while daylight saving is in effect, and 06:00 once
+# EST starts on 2 Nov 2026. If the hour matters, change this to "0 12 * * *" then.
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch: {}
+
+# Needed to commit the rebuilt page back to the repository.
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build the page
+        working-directory: pipeline
+        run: |
+          set -euo pipefail
+
+          # Yesterday's snapshot carries each listing's first_seen date and the posting
+          # date parsed from JOE. Without it every listing looks new and the Posted
+          # column empties out.
+          if [ -f ../state/joe_snapshot.json ]; then
+            cp ../state/joe_snapshot.json prior_snapshot.json
+          else
+            echo "No prior snapshot - treating this as the first run."
+          fi
+
+          sh fetch.sh
+          python3 posted.py      # exits non-zero if it cannot date 95% of listings
+          python3 score.py
+          python3 classify.py
+          python3 merge.py
+          python3 dash2.py
+
+      - name: Refuse to publish a collapsed feed
+        working-directory: pipeline
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          new = json.load(open('joe_snapshot.json'))['listings']
+          if os.path.exists('prior_snapshot.json'):
+              prior = json.load(open('prior_snapshot.json'))
+              prior = prior.get('listings', prior)
+              if len(prior) > 20 and len(new) < 0.8 * len(prior):
+                  sys.exit(f"FATAL: {len(new)} listings today vs {len(prior)} yesterday. "
+                           "That is a broken fetch, not news - publishing nothing.")
+          print(f"{len(new)} listings")
+          PY
+
+      - name: Move the results into place
+        run: |
+          set -euo pipefail
+          mkdir -p state
+          cp pipeline/site/index.html index.html
+          cp pipeline/joe_snapshot.json state/joe_snapshot.json
+
+      - name: Commit if anything changed
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html state/joe_snapshot.json
+          if git diff --quiet --cached; then
+            echo "Nothing changed today - no commit."
+          else
+            git commit -m "Refresh listings $(date -u +%Y-%m-%d)"
+            git push
+          fi

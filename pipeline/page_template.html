@@ -1,0 +1,1039 @@
+<title>Econ Job Market 2026&ndash;27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --bg:#F1F4F2;--surface:#FFFFFF;--surface-2:#F7F9F8;--ink:#15191B;--ink-2:#4E5A5C;
+  --muted:#758285;--line:#DBE2E0;--line-2:#EAEFED;
+  --accent:#0F5E56;--accent-soft:#DCEBE7;--accent-ink:#0F5E56;--on-accent:#FFFFFF;
+  --urgent:#9E2B22;--urgent-soft:#F7E2DF;--warn:#8A5600;--warn-soft:#F7EBD6;--good:#2C6440;
+  --star:#B8860B;--shadow:0 1px 2px rgba(21,25,27,.06),0 4px 14px rgba(21,25,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1213;--surface:#161B1C;--surface-2:#1B2122;--ink:#E3E9E7;--ink-2:#AFBBB9;
+  --muted:#7E8C8A;--line:#252D2E;--line-2:#1F2627;
+  --accent:#63C3B0;--accent-soft:#14302D;--accent-ink:#7FD3C1;--on-accent:#0E1213;
+  --urgent:#E38175;--urgent-soft:#3A1F1C;--warn:#D5A14C;--warn-soft:#332818;--good:#71B98A;
+  --star:#E0B75C;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1213;--surface:#161B1C;--surface-2:#1B2122;--ink:#E3E9E7;--ink-2:#AFBBB9;
+  --muted:#7E8C8A;--line:#252D2E;--line-2:#1F2627;
+  --accent:#63C3B0;--accent-soft:#14302D;--accent-ink:#7FD3C1;--on-accent:#0E1213;
+  --urgent:#E38175;--urgent-soft:#3A1F1C;--warn:#D5A14C;--warn-soft:#332818;--good:#71B98A;
+  --star:#E0B75C;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1220px;margin:0 auto;padding:0 24px 80px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600;text-wrap:balance;margin:0}
+header{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20}
+.hbar{max-width:1220px;margin:0 auto;padding:16px 24px 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px}
+h1{font-size:23px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:12.5px;font-family:"IBM Plex Mono",monospace}
+.counts{margin-left:auto;display:flex;gap:20px;font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:right}
+.counts b{font-size:19px;font-weight:500;color:var(--accent-ink);display:block;line-height:1.2}
+.counts span{color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.tabs{max-width:1220px;margin:0 auto;padding:12px 24px 0;display:flex;gap:2px;align-items:flex-end}
+.tab{padding:8px 15px;border:1px solid transparent;border-bottom:none;border-radius:7px 7px 0 0;
+  background:none;color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer;position:relative;top:1px}
+.tab[aria-selected="true"]{background:var(--bg);border-color:var(--line);color:var(--ink);font-weight:500}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.status{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;padding:4px 10px;
+  border-radius:20px;background:var(--surface-2);color:var(--muted);align-self:center;margin-bottom:6px;
+  border:1px solid var(--line)}
+.status[data-s="idle"]:not([data-has]){background:none;border-color:transparent;padding:0}
+.status[data-s="saving"]{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.status[data-s="saved"]{color:var(--good);background:var(--accent-soft);border-color:transparent}
+.status[data-s="error"]{color:var(--urgent);background:var(--urgent-soft);border-color:transparent}
+section{margin-top:30px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:13px;flex-wrap:wrap}
+.shead h2{font-size:19px} .shead .note{color:var(--muted);font-size:13px}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(256px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:13px 15px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--line)}
+.card.u0{border-left-color:var(--urgent)}.card.u1{border-left-color:var(--warn)}.card.u2{border-left-color:var(--accent)}
+.cd{font-family:"IBM Plex Mono",monospace;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cd .ext{margin-left:auto}
+.days{font-weight:500;padding:2px 8px;border-radius:20px;font-size:11px;white-space:nowrap}
+.u0 .days{background:var(--urgent-soft);color:var(--urgent)}
+.u1 .days{background:var(--warn-soft);color:var(--warn)}
+.u2 .days{background:var(--accent-soft);color:var(--accent-ink)}
+.cdate{color:var(--muted)}
+.card .ti{font-family:"Source Serif 4",Georgia,serif;font-size:15px;line-height:1.3}
+.card .in{font-size:13px;color:var(--ink-2)}
+.card .me{font-size:11.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:13px}
+input[type=search]{flex:1;min-width:210px;padding:9px 12px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface);color:var(--ink);font:inherit;font-size:14px}
+input[type=search]:focus,button:focus-visible,.chip:focus-visible,.note:focus{outline:2px solid var(--accent);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;border:1px solid var(--line);border-radius:20px;background:var(--surface);
+  color:var(--ink-2);font:inherit;font-size:12.5px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:940px}
+th{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-weight:600;font-size:10.5px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);white-space:nowrap;cursor:pointer;
+  user-select:none;background:var(--surface-2)}
+th.nosort{cursor:default} th:not(.nosort):hover{color:var(--accent-ink)}
+th .ar{opacity:.4;font-size:9px}
+td{padding:10px 13px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr.row{cursor:pointer} tr.row:hover td{background:var(--surface-2)}
+.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ti{font-weight:500} .in{color:var(--ink-2);font-size:12.5px}
+.pill{display:inline-block;padding:1.5px 7px;border-radius:4px;font-size:11px;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.p-tt{background:var(--accent-soft);color:var(--accent-ink)}
+.p-pd{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.p-po{background:var(--warn-soft);color:var(--warn)}
+.p-pv{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.dneg{color:var(--urgent)}.dsoon{color:var(--urgent);font-weight:500}.dmid{color:var(--warn)}
+.tier{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:4px;
+  font-size:11px;font-family:"IBM Plex Mono",monospace;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.tier.t1{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
+.flag{font-size:11px;color:var(--warn);font-family:"IBM Plex Mono",monospace}
+.newtag{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.06em;padding:1px 5px;
+  border-radius:3px;background:var(--accent-soft);color:var(--accent-ink);font-family:"IBM Plex Sans",sans-serif}
+.posted{color:var(--ink-2)}
+.star{background:none;border:none;cursor:pointer;font-size:17px;line-height:1;padding:2px 4px;
+  color:var(--line);transition:color .12s}
+.star:hover{color:var(--star)} .star[aria-pressed="true"]{color:var(--star)}
+.star[disabled]{cursor:default;opacity:.35}
+tr.det td{background:var(--surface-2);padding:0 13px}
+.detin{padding:13px 0 17px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 26px}
+.dl{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.dv{font-size:13px;color:var(--ink-2)}
+a.jl{color:var(--accent-ink);font-weight:500}
+.empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:14px;max-width:52ch;margin:0 auto;line-height:1.6}
+.slist{display:flex;flex-direction:column;gap:12px}
+.sitem{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);
+  padding:15px 17px;display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.sitem .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sitem h3{font-size:16px}
+.sitem .in{font-size:13px}
+.sitem .me{grid-column:1/-1;font-size:11.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace;
+  display:flex;gap:14px;flex-wrap:wrap;margin-top:2px}
+/* input.note, not .note: the section headers use <span class="note"> for their caption,
+   and the unscoped rule was painting those as empty input boxes. */
+input.note{grid-column:1/-1;margin-top:9px;width:100%;padding:8px 10px;border:1px solid var(--line);
+  border-radius:6px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:13.5px}
+input.note::placeholder{color:var(--muted)}
+input.note[readonly]{background:transparent;border-color:transparent;padding-left:0}
+input.note[readonly]::placeholder{color:transparent}
+.sact{display:flex;gap:8px;align-items:flex-start}
+.txt{background:none;border:1px solid var(--line);border-radius:6px;padding:5px 10px;font:inherit;
+  font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.txt:hover{border-color:var(--accent);color:var(--accent-ink)}
+.outrow{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line-2);font-size:13.5px;
+  align-items:baseline;flex-wrap:wrap}
+.why{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:1.5px 7px;border-radius:4px;
+  background:var(--urgent-soft);color:var(--urgent);white-space:nowrap}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:6px 17px 17px}
+.lede{color:var(--muted);font-size:13.5px;max-width:68ch;margin:0 0 4px}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;max-width:70ch}
+[hidden]{display:none!important}
+/* --- applications --- */
+.board{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.bcell{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:9px 13px;
+  min-width:96px;box-shadow:var(--shadow)}
+.bcell b{display:block;font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:500;line-height:1.2}
+.bcell span{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bcell.on b{color:var(--accent-ink)}
+.stagegrp{margin-bottom:26px}
+.stagehd{display:flex;align-items:baseline;gap:9px;margin:0 0 10px;padding-bottom:6px;
+  border-bottom:1px solid var(--line)}
+.stagehd h3{font-size:15px;font-family:"Source Serif 4",Georgia,serif}
+.stagehd .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted)}
+.app{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);
+  padding:15px 17px;margin-bottom:10px;border-left:3px solid var(--line)}
+.app.s-submitted{border-left-color:var(--accent)}
+.app.s-interview{border-left-color:var(--warn)}
+.app.s-flyout{border-left-color:var(--warn)}
+.app.s-offer{border-left-color:var(--good)}
+.app.s-rejected,.app.s-withdrawn{border-left-color:var(--line);opacity:.62}
+.app .top{display:flex;justify-content:space-between;gap:14px;align-items:baseline;flex-wrap:wrap}
+.app h4{font-family:"Source Serif 4",Georgia,serif;font-size:16px;font-weight:600;margin:0}
+.app .inst{font-size:13px;color:var(--ink-2);margin-top:1px}
+.ctrls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:12px}
+.stagesel{padding:5px 9px;border:1px solid var(--line);border-radius:5px;background:var(--surface-2);
+  color:var(--ink);font:inherit;font-size:13px}
+.when{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.when input{padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--surface-2);
+  color:var(--ink);font:inherit;font-size:13px}
+.checks{display:flex;gap:14px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+.chk.on{color:var(--good)}
+.chk input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer}
+.acts{display:flex;gap:9px;align-items:center;margin-top:11px;flex-wrap:wrap}
+a.ext{color:var(--muted);text-decoration:none;font-size:15px;padding:0 4px}
+a.ext:hover{color:var(--accent-ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:11px 18px;margin-top:12px}
+.fld label{display:block;font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3px}
+.fld input,.fld select{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:5px;
+  background:var(--surface-2);color:var(--ink);font:inherit;font-size:13px}
+.fld input:focus,.fld select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.fld .ro{font-size:13.5px;color:var(--ink-2);padding:6px 0}
+.app .note{margin-top:11px}
+.priv{margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
+.priv>summary{font-size:11.5px;color:var(--muted);cursor:pointer;font-family:"IBM Plex Mono",monospace}
+.priv textarea{width:100%;margin-top:7px;min-height:62px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:6px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:13.5px;resize:vertical}
+.priv textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.privtag{font-size:10.5px;color:var(--muted);margin-top:5px}
+.due{font-family:"IBM Plex Mono",monospace;font-size:12px}
+.nextline{margin-top:10px;font-size:13px;color:var(--ink-2);display:flex;gap:8px;align-items:baseline}
+.nextline .lbl{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+/* ---- preferences + backup (shared edition) ---- */
+details.box{background:var(--surface);border:1px solid var(--line);border-radius:9px;
+  box-shadow:var(--shadow);margin-bottom:22px}
+details.box>summary{cursor:pointer;padding:13px 18px;list-style:none;display:flex;
+  align-items:baseline;gap:12px;flex-wrap:wrap}
+details.box>summary::-webkit-details-marker{display:none}
+details.box>summary::after{content:"edit";margin-left:auto;font-family:"IBM Plex Mono",monospace;
+  font-size:11px;color:var(--accent-ink);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+details.box[open]>summary::after{content:"done"}
+details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:9px}
+.sumtitle{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:15px}
+.sumline{font-size:12.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.boxin{padding:4px 18px 18px;display:flex;flex-direction:column;gap:16px;
+  border-top:1px solid var(--line-2)}
+.optgroup>h4{margin:0 0 8px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);font-family:"IBM Plex Sans",sans-serif;font-weight:600}
+.optgroup>p{margin:0 0 9px;font-size:12.5px;color:var(--ink-2);max-width:62ch}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--line);
+  border-radius:20px;background:var(--surface);color:var(--ink-2);font-size:12.5px;cursor:pointer;
+  user-select:none}
+.opt input{position:absolute;opacity:0;width:0;height:0}
+.opt:has(input:checked),.opt[data-on]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.opt:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.prefsfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.fit{display:inline-flex;gap:2px;align-items:center}
+.fit i{width:5px;height:5px;border-radius:50%;background:var(--line);display:block}
+.fit[data-n="3"] i:nth-child(-n+3),.fit[data-n="2"] i:nth-child(-n+2),.fit[data-n="1"] i:nth-child(1){
+  background:var(--accent)}
+.backup textarea{width:100%;min-height:90px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:6px;background:var(--surface-2);color:var(--ink);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;resize:vertical}
+.btn{font:inherit;font-size:13px;padding:7px 13px;border-radius:6px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);cursor:pointer}
+.btn:hover{color:var(--accent-ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.warnbar{background:var(--warn-soft);color:var(--warn);border-radius:7px;padding:10px 14px;
+  font-size:13px;margin-bottom:18px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <div class="hbar">
+    <h1>Econ Job Market</h1>
+    <span class="sub">AEA JOE &middot; Aug 1 2026 &ndash; Jan 31 2027 &middot; pulled __PULLED__</span>
+    <div class="counts">
+      <div><b>__NEL__</b><span>listings</span></div>
+      <div><b id="nf1">__NF1__</b><span id="nf1lab">core field</span></div>
+      <div><b>__NSOON__</b><span>close in 30d</span></div>
+      <div><b id="napp">0</b><span>applications</span></div>
+      <div><b id="npick">0</b><span>shortlisted</span></div>
+    </div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-app" aria-selected="true" aria-controls="v-app">Applications</button>
+    <button class="tab" role="tab" id="t-short" aria-selected="false" aria-controls="v-short">Shortlist</button>
+    <button class="tab" role="tab" id="t-all" aria-selected="false" aria-controls="v-all">All listings</button>
+    <button class="tab" role="tab" id="t-out" aria-selected="false" aria-controls="v-out">Screened out</button>
+    <span class="status" id="status" data-s="idle"></span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div id="v-app" role="tabpanel" aria-labelledby="t-app">
+  <section>
+    <div class="shead"><h2>Applications</h2><span class="note" id="atag"></span></div>
+    <div class="board" id="board"></div>
+    <div id="apps"></div>
+  </section>
+</div>
+
+<div id="v-short" role="tabpanel" aria-labelledby="t-short" hidden>
+  <section>
+    <div class="shead"><h2>Shortlist</h2><span class="note-x" id="stag"></span></div>
+    <div class="slist" id="slist"></div>
+  </section>
+</div>
+
+<div id="v-all" role="tabpanel" aria-labelledby="t-all" hidden>
+  <div id="storagewarn" class="warnbar" hidden></div>
+  <details class="box" id="prefs" hidden>
+    <summary>
+      <span class="sumtitle">My preferences</span>
+      <span class="sumline" id="prefsum">not set &mdash; sorting is the same for everyone</span>
+    </summary>
+    <div class="boxin" id="prefsin"></div>
+  </details>
+  <section>
+    <div class="shead"><h2>Closing soon</h2><span class="note">next 30 days</span></div>
+    <div class="soon" id="soon"></div>
+  </section>
+  <section>
+    <div class="shead"><h2>All listings</h2><span class="note" id="shown"></span></div>
+    <div class="controls">
+      <input type="search" id="q" placeholder="Search institution, title, department, keyword&hellip;" aria-label="Search listings">
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr>
+        <th class="nosort" aria-label="Shortlist"></th>
+        <th data-k="posted">Posted <span class="ar">&#9660;</span></th>
+        <th data-k="days">Deadline</th>
+        <th data-k="fit" id="th-fit">Fit</th>
+        <th data-k="inst">Institution</th>
+        <th data-k="title">Position</th>
+        <th data-k="track">Track</th>
+        <th data-k="f">Field</th>
+        <th data-k="g">Geo</th>
+        <th data-k="loc">Location</th>
+        <th class="nosort" aria-label="Listing"></th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+  </section>
+</div>
+
+<div id="v-out" role="tabpanel" aria-labelledby="t-out" hidden>
+  <section>
+    <div class="shead"><h2>Screened out</h2><span class="note">__NOUT__ listings</span></div>
+    <div class="panel">
+      <p class="lede" id="outlede">Set aside by the field or rank screen &mdash; not economics, or a rank above assistant level.
+      Nothing is deleted. If one of these is wrong, say so and the rule gets fixed: a false exclusion is the expensive kind of error.</p>
+      <div id="outlist"></div>
+    </div>
+  </section>
+</div>
+
+<details class="box backup" id="backup" hidden>
+  <summary>
+    <span class="sumtitle">Back up or restore</span>
+    <span class="sumline">your data lives in this browser only</span>
+  </summary>
+  <div class="boxin">
+    <div class="optgroup">
+      <p>Everything you star, track and set here is stored by this browser on this machine.
+      Clearing site data, or opening the tracker on another computer, starts you from nothing.
+      Copy this text somewhere safe to be able to restore it &mdash; or to carry it to another machine.</p>
+      <textarea id="bkout" readonly aria-label="Your data, as text"></textarea>
+      <div class="prefsfoot" style="margin-top:9px">
+        <button class="btn primary" type="button" id="bkcopy">Copy</button>
+        <span id="bkmsg"></span>
+      </div>
+    </div>
+    <div class="optgroup">
+      <h4>Restore</h4>
+      <p>Paste a backup here and restore it. This replaces everything currently in this browser.</p>
+      <textarea id="bkin" placeholder="Paste your backup text here" aria-label="Paste a backup to restore"></textarea>
+      <div class="prefsfoot" style="margin-top:9px">
+        <button class="btn" type="button" id="bkrestore">Restore from text</button>
+        <span id="bkrmsg"></span>
+      </div>
+    </div>
+  </div>
+</details>
+
+<footer id="foot"></footer>
+</div>
+
+<script id="joe-data" type="application/json">__DATA__</script>
+<script id="joe-out" type="application/json">__OUT__</script>
+<script id="joe-soon" type="application/json">__SOON__</script>
+<script id="joe-state" type="application/json">__STATE__</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('joe-data').textContent);
+const OUT  = JSON.parse(document.getElementById('joe-out').textContent);
+const SOON = JSON.parse(document.getElementById('joe-soon').textContent);
+let STATE  = JSON.parse(document.getElementById('joe-state').textContent);
+if(!STATE.picks) STATE.picks = {};
+const BY = Object.fromEntries(DATA.map(d=>[d.id,d]));
+const TRACK={'Academic TT':'p-tt','Postdoc/Visiting':'p-pd','Policy/Gov':'p-po',
+             'Private sector':'p-pv','Nonacademic other':'p-pv','Adjunct':'p-pv'};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dcls=d=>d==null?'':d<0?'dneg':d<=14?'dsoon':d<=30?'dmid':'';
+/* Days since JOE posted a listing, computed in the browser so the NEW badge stays
+   honest even if the page is not rebuilt for a few days. */
+const NEW_DAYS=7;
+function agePosted(p){
+  if(!p) return null;
+  const t=Date.parse(p+'T00:00:00Z'); if(isNaN(t)) return null;
+  const n=new Date(), today=Date.UTC(n.getFullYear(),n.getMonth(),n.getDate());
+  return Math.round((today-t)/864e5);
+}
+const isNew=p=>{const a=agePosted(p); return a!=null&&a>=0&&a<=NEW_DAYS;};
+
+/* ---------- per-viewer UI state (sessionStorage; never published) ---------- */
+const UI_KEY='jm_ui_v1';
+function loadUI(){ try{ return JSON.parse(sessionStorage.getItem(UI_KEY))||{}; }catch(e){ return {}; } }
+function saveUI(patch){
+  try{ sessionStorage.setItem(UI_KEY, JSON.stringify(Object.assign(loadUI(), patch))); }catch(e){}
+}
+
+/* ---------- which edition is this? ----------
+   personal — Danny's own tracker. His shortlist and applications are published in this
+              page (#joe-state); the daily rebuild reads them back and carries them forward.
+   shared   — the edition he sends to classmates on the same market. No one's personal data
+              is in the page, because everything in a published page is visible to everyone
+              holding the link. Each viewer's stars, applications and preferences live in
+              their own browser: saving is instant, nothing is published, and nobody can see
+              anybody else's list. */
+const MODE='__MODE__', SHARED = (MODE === 'shared');
+const LOCAL_KEY = 'jm_local_v1';
+const NCOL = SHARED ? 11 : 10;        /* the shared edition carries a Fit column */
+
+function setFooter(){
+  const f=document.getElementById('foot');
+  const lab=document.getElementById('nf1lab');
+  if(SHARED){
+    if(lab) lab.textContent='in my fields';
+    f.innerHTML = 'Every AEA JOE listing for the 2026&ndash;27 cycle, refreshed each morning. '
+      + 'Fit ranks on your fields, then where you would go, then the kind of job &mdash; set those '
+      + 'under <strong>My preferences</strong>. Nothing is ever filtered out by a preference; it '
+      + 'only sorts lower. Your stars, applications and notes are kept by this browser alone: they '
+      + 'are not published with the page, nobody else can see them, and they do not follow you to '
+      + 'another machine unless you copy them across under <strong>Back up or restore</strong>.';
+    const ol=document.getElementById('outlede');
+    if(ol) ol.textContent='Set aside as not economics, or as a rank above assistant level — the same '
+      +'screen for everyone, and nothing to do with your preferences. Nothing is deleted. If one of '
+      +'these looks wrong to you, tell Danny and the rule gets fixed.';
+  } else {
+    f.innerHTML = 'Priority ranks on field, then geography, then track. Field tier 1 is JEL J* (labor), '
+      + 'N* (economic history), or 00 (open-field search). Economic history is largely advertised off '
+      + 'JOE, on the EHA, EHS, and H-Net boards. Shared notes are published with this page and visible '
+      + 'to anyone holding the link; private notes stay in the browser that typed them.';
+  }
+}
+
+/* ---------- persistence ---------- */
+/* 8s, not 1.2s: on the personal page every save republishes the whole page, which reloads
+   the view. A long debounce turns a burst of stars into ONE reload; visibilitychange and
+   pagehide flush early so nothing sits unsaved when he leaves. The shared page never
+   publishes, so none of this applies there — it writes to localStorage immediately. */
+const SAVE_DELAY=8000;
+let api=null, readOnly=false, mode='files', timer=null, dirty=false;
+const statusEl=document.getElementById('status');
+function setStatus(s,msg){ statusEl.dataset.s=s; statusEl.textContent=msg||
+  ({idle:' ',saving:'saving…',saved:'saved',ro:'read-only view'}[s]||' '); }
+function goReadOnly(){ readOnly=true; setStatus('idle','read-only view'); renderAll(); }
+
+/* Called at the very END of this script. It must not run before the declarations
+   below it exist: on a viewer with no `window.claude`, the capability check resolves
+   without ever awaiting, so an IIFE here would reach renderAll() synchronously and
+   hit STAGES in its temporal dead zone. */
+async function initPersistence(){
+  if(SHARED) return;            /* the shared page loads its state in bootLocal(), below */
+  try{ api = (window.claude && claude.use) ? await claude.use('artifact') : null; }catch(e){ api=null; }
+  if(!api){ goReadOnly(); return; }
+  try{
+    const r = await fetch('data/state.json',{cache:'no-store'});
+    if(r.ok){ const jv = await r.json(); if(jv && jv.picks){
+      STATE = jv;
+      if(!STATE.picks) STATE.picks={};
+      function migrate(p){
+  p = Object.assign(blank(), p);
+  /* Older versions of this page offered Interview/Flyout/Offer/Rejected/Withdrawn.
+     Anything not in the current STAGES list lands on the last stage rather than
+     rendering a select with no matching option. */
+  if(p.status && STAGES.indexOf(p.status)===-1) p.status = STAGES[STAGES.length-1];
+  if(typeof p.mats!=='boolean')    p.mats    = !!p.mats;
+  if(typeof p.letters!=='boolean') p.letters = !!p.letters;
+  return p;
+}
+Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
+      renderAll();
+    } }
+  }catch(e){}
+}
+
+function queueSave(){
+  if(readOnly) return;
+  if(SHARED){ saveLocal(); return; }
+  setStatus('saving'); dirty=true;
+  clearTimeout(timer); timer=setTimeout(save,SAVE_DELAY);
+}
+/* Flush early if he leaves the tab or the page: better to take the reload while he is
+   looking away than to sit on unsaved stars. Personal page only — nothing to flush
+   on the shared one, where every change is already written. */
+if(!SHARED){
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden' && dirty){ clearTimeout(timer); save(); }
+  });
+  window.addEventListener('pagehide',()=>{ if(dirty){ clearTimeout(timer); save(); } });
+}
+
+/* ---------- local storage (shared edition) ---------- */
+let storageOK=true, flashT=null;
+function saveLocal(){
+  let ok=true;
+  try{
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(
+      {v:1, saved:new Date().toISOString(), picks:STATE.picks, prefs:PREFS}));
+  }catch(e){ ok=false; storageOK=false; }
+  setStatus(ok?'saved':'error', ok?'saved':'not saved — this browser blocks storage');
+  refreshBackup();
+  clearTimeout(flashT);
+  if(ok) flashT=setTimeout(()=>setStatus('idle',' '), 1600);
+  return ok;
+}
+/* Runs at the bottom of this script, before the first render, so the page draws once
+   with the viewer's own stars and preferences already in place. */
+function bootLocal(){
+  let rec=null;
+  try{ const raw=localStorage.getItem(LOCAL_KEY); if(raw) rec=JSON.parse(raw); }
+  catch(e){ rec=null; }
+  try{ localStorage.setItem(LOCAL_KEY+'.probe','1'); localStorage.removeItem(LOCAL_KEY+'.probe'); }
+  catch(e){ storageOK=false; }
+  if(rec && typeof rec==='object'){
+    if(rec.picks && typeof rec.picks==='object') STATE.picks = rec.picks;
+    if(rec.prefs) PREFS = normPrefs(rec.prefs);
+  }
+  Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
+  if(!storageOK){
+    const w=document.getElementById('storagewarn');
+    w.hidden=false;
+    w.textContent='This browser is blocking site storage, so nothing you star here can be kept. '
+      +'Private windows and strict privacy settings do that. The listings still work.';
+  }
+}
+
+let saving=false;
+async function save(){
+  if(!api||readOnly||saving) return;   /* the timer and the visibility flush can race */
+  saving=true;
+  try{ await doSave(); } finally { saving=false; }
+}
+const ser=()=>JSON.stringify(STATE).replace(/</g,'\\u003c');
+async function doSave(){
+  let payload = ser();
+  if(mode==='files'){
+    try{ await api.publish({'data/state.json':{content:payload,contentType:'application/json'}});
+         dirty=false; setStatus('saved'); return; }
+    catch(e){ const c=e&&e.code;
+      if(c==='not_writer'||c==='not_granted'||c==='consent_required'){ goReadOnly(); return; }
+      if(c==='conflict'){ setStatus('idle','reloading…'); return; }
+      /* Fell back to replacing the whole page, which reloads this view. Record why:
+         the difference between "this artifact cannot do file saves" and a bug in the
+         payload is worth knowing, and it is invisible otherwise. */
+      mode='html'; saveUI({fileSaveError:String(c||'unknown')});
+      /* Published with this very save: the html form is the one that reloads, so the note
+         rides along and I can read it off the artifact without Danny relaying anything. */
+      STATE.diag={fileSave:String(c||'unknown'), at:new Date().toISOString().slice(0,19)+'Z'};
+      payload = ser();
+      console.warn('[jm] files-form publish unavailable ('+(c||'unknown')+') — '
+                   +'falling back to full-page publish, which reloads the view'); }
+  }
+  try{
+    const src = await (await fetch(location.href,{cache:'no-store'})).text();
+    /* The tag name is assembled at runtime so this source never contains the literal
+       string it searches for. Otherwise a splice that replaces every match — which any
+       rebuilding script might reasonably do — would corrupt this very code block. */
+    const TAG = 'joe-' + 'state';
+    const re = new RegExp('(<script id="' + TAG + '"[^>]*>)[\\s\\S]*?(<\\/script>)');
+    const outp = src.replace(re, (m,a,b)=>a+payload+b);
+    if(outp===src) throw {code:'invalid_content'};
+    await api.publish(outp); dirty=false; setStatus('saved');
+  }catch(e){
+    const c=(e&&e.code)||'unknown';
+    if(c==='not_writer'||c==='not_granted'||c==='consent_required'){ goReadOnly(); return; }
+    if(c==='conflict'){ setStatus('idle','reloading…'); return; }
+    setStatus('error','not saved ('+c+')');
+  }
+}
+
+/* ---------- picks ---------- */
+const STAGES=['Applying','Submitted'];
+const CHECKS=[['mats','Materials uploaded'],['letters','Letters in']];
+function blank(){ return {note:'',status:'',applied:'',mats:false,letters:false}; }
+function migrate(p){
+  p = Object.assign(blank(), p);
+  /* Older versions of this page offered Interview/Flyout/Offer/Rejected/Withdrawn.
+     Anything not in the current STAGES list lands on the last stage rather than
+     rendering a select with no matching option. */
+  if(p.status && STAGES.indexOf(p.status)===-1) p.status = STAGES[STAGES.length-1];
+  if(typeof p.mats!=='boolean')    p.mats    = !!p.mats;
+  if(typeof p.letters!=='boolean') p.letters = !!p.letters;
+  return p;
+}
+Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
+
+/* ---------- preferences and fit ----------
+   The feed is the same for everyone; the ranking is not. Each viewer picks the fields they
+   work in, the places they would actually move to, and the kinds of job they want, and the
+   page scores every listing against that in the browser. Nothing is hidden by a preference:
+   an unwanted listing sorts lower, it never disappears. Set nothing and every listing scores
+   the same, which leaves the table sorted newest-first — still useful on day one. */
+const FIELDS=[
+  ['00','Open / general search'],['J','Labor & demographic'],['N','Economic history'],
+  ['D','Microeconomics'],['E','Macro & monetary'],['F','International'],['G','Finance'],
+  ['H','Public economics'],['I','Health, education, welfare'],['K','Law & economics'],
+  ['L','Industrial organization'],['O','Development & growth'],['Q','Agricultural & environmental'],
+  ['R','Urban & regional'],['C','Econometrics & methods'],['M','Business & marketing'],
+  ['P','Economic systems'],['A','General economics'],['Z','Cultural & sports']];
+const US_REGIONS=[
+  ['ne','Northeast',['New York','New Jersey','Pennsylvania','Massachusetts','Connecticut',
+    'Rhode Island','New Hampshire','Vermont','Maine']],
+  ['dc','DC & Mid-Atlantic',['District of Columbia','Maryland','Virginia','Delaware','West Virginia']],
+  ['mw','Midwest',['Illinois','Michigan','Ohio','Wisconsin','Minnesota','Indiana','Iowa','Missouri',
+    'Kansas','Nebraska','North Dakota','South Dakota']],
+  ['so','South',['Florida','Georgia','North Carolina','South Carolina','Tennessee','Alabama',
+    'Mississippi','Louisiana','Texas','Oklahoma','Arkansas','Kentucky']],
+  ['mt','Mountain & Southwest',['Colorado','Utah','Arizona','New Mexico','Nevada','Idaho',
+    'Montana','Wyoming']],
+  ['we','West Coast',['California','Washington','Oregon','Hawaii','Alaska']]];
+const EUROPE=['UNITED KINGDOM','GERMANY','FRANCE','ITALY','SPAIN','NETHERLANDS','SWITZERLAND',
+  'SWEDEN','NORWAY','DENMARK','FINLAND','BELGIUM','AUSTRIA','IRELAND','PORTUGAL','POLAND',
+  'CZECH REPUBLIC','GREECE','HUNGARY','LUXEMBOURG'];
+const REGIONS=US_REGIONS.map(r=>[r[0],r[1]])
+  .concat([['ca','Canada'],['eu','UK & Europe'],['row','Rest of world']]);
+const TRACKS=['Academic TT','Postdoc/Visiting','Policy/Gov','Private sector','Nonacademic other','Adjunct'];
+
+let PREFS = normPrefs(null);
+function normPrefs(p){
+  const arr=(v,ok)=>Array.isArray(v)?v.filter(x=>ok.indexOf(x)!==-1):[];
+  p = p||{};
+  return {fields: arr(p.fields, FIELDS.map(f=>f[0])),
+          regions: arr(p.regions, REGIONS.map(r=>r[0])),
+          tracks:  arr(p.tracks, TRACKS)};
+}
+function prefsSet(){ return PREFS.fields.length||PREFS.regions.length||PREFS.tracks.length; }
+
+/* JEL codes arrive as "J1;J3;C2". The top level is the letter, except the general-search
+   code 00, which is how most top departments advertise an open field. */
+function jelTops(s){
+  const out=[];
+  String(s||'').split(';').forEach(c=>{
+    c=c.trim(); if(!c) return;
+    const t = /^[0-9]/.test(c) ? c.slice(0,2) : c[0].toUpperCase();
+    if(out.indexOf(t)===-1) out.push(t);
+  });
+  return out;
+}
+function regionOf(d){
+  const st=d.st||'', cc=(d.cc||'').toUpperCase();
+  if(cc==='UNITED STATES'){
+    for(const r of US_REGIONS) if(r[2].indexOf(st)!==-1) return r[0];
+    return 'usother';
+  }
+  if(cc==='CANADA') return 'ca';
+  if(EUROPE.indexOf(cc)!==-1) return 'eu';
+  return 'row';
+}
+/* Every dimension with nothing chosen returns 2 — neutral — so a half-filled preference
+   set still ranks on the parts that were filled in. */
+function fitOf(d){
+  let f=2,g=2,tr=2;
+  if(PREFS.fields.length){
+    const tops=jelTops(d.jel);
+    f = tops.some(t=>PREFS.fields.indexOf(t)!==-1) ? 1 : (tops.indexOf('00')!==-1 ? 2 : 3);
+  }
+  if(PREFS.regions.length){
+    const r=regionOf(d);
+    g = PREFS.regions.indexOf(r)!==-1 ? 1 : ((d.cc||'').toUpperCase()==='UNITED STATES' ? 2 : 3);
+  }
+  if(PREFS.tracks.length) tr = PREFS.tracks.indexOf(d.track)!==-1 ? 1 : 3;
+  return {f:f, g:g, tr:tr, score:f*100+g*10+tr};
+}
+function applyScores(){
+  if(!SHARED) return;                 /* the personal page keeps the tiers score.py computed */
+  DATA.forEach(d=>{ const x=fitOf(d); d.f=x.f; d.g=x.g; d.tr=x.tr; d.fit=x.score; });
+  const el=document.getElementById('nf1');
+  if(el) el.textContent = prefsSet() ? DATA.filter(d=>d.f===1).length : '—';
+}
+const fitDots = v => v==null ? 0 : (v<130 ? 3 : v<230 ? 2 : 1);
+function fitTitle(d){
+  if(!prefsSet()) return 'Set your preferences to rank this list';
+  const fl = d.f===1?'in your fields':d.f===2?'open or general search':'outside your fields';
+  const gl = d.g===1?'in your regions':d.g===2?'elsewhere in the US':'outside the US';
+  const tl = d.tr===1?'a track you want':d.tr===2?'any track':'not a track you picked';
+  return fl+' · '+gl+' · '+tl;
+}
+
+/* ---------- preferences panel ---------- */
+function optGroup(title, blurb, items, sel, onto){
+  const opts = items.map(it=>{
+    const [val,label] = Array.isArray(it) ? it : [it,it];
+    const on = sel.indexOf(val)!==-1;
+    /* data-on duplicates what :has(input:checked) does, for browsers without :has —
+       the checkbox itself is visually hidden, so without it a click would look inert. */
+    return `<label class="opt"${on?' data-on=""':''}><input type="checkbox" data-pref="${esc(onto)}"
+      value="${esc(val)}"${on?' checked':''}><span>${esc(label)}</span></label>`;
+  }).join('');
+  return `<div class="optgroup"><h4>${esc(title)}</h4><p>${esc(blurb)}</p>
+    <div class="opts">${opts}</div></div>`;
+}
+function renderPrefs(){
+  if(!SHARED) return;
+  document.getElementById('prefs').hidden=false;
+  document.getElementById('backup').hidden=false;
+  document.getElementById('prefsin').innerHTML =
+    optGroup('My fields','Listings carrying one of these JEL codes rank first. Open searches — JEL 00, how most top departments advertise — sit in the middle unless you tick them.',FIELDS,PREFS.fields,'fields')
+    + optGroup('Where I would go','Everywhere else still shows, lower down. US locations outside your picks rank above non-US ones.',REGIONS,PREFS.regions,'regions')
+    + optGroup('What I am looking for','The kind of position. Leave empty if you are open to all of them.',TRACKS,PREFS.tracks,'tracks')
+    + `<div class="prefsfoot"><button class="btn" type="button" id="prefsclear">Clear all</button>
+       <span>Stored in this browser. Nothing here is sent anywhere or visible to anyone else.</span></div>`;
+  document.querySelectorAll('[data-pref]').forEach(cb=>cb.addEventListener('change',()=>{
+    const k=cb.dataset.pref, v=cb.value, at=PREFS[k].indexOf(v);
+    if(cb.checked){ if(at===-1) PREFS[k].push(v); } else if(at!==-1){ PREFS[k].splice(at,1); }
+    const lab=cb.closest('.opt');
+    if(lab){ if(cb.checked) lab.setAttribute('data-on',''); else lab.removeAttribute('data-on'); }
+    afterPrefs();
+  }));
+  document.getElementById('prefsclear').addEventListener('click',()=>{
+    PREFS=normPrefs(null); renderPrefs(); afterPrefs();
+  });
+  updatePrefSummary();
+  if(!prefsSet()) document.getElementById('prefs').open=true;
+}
+function updatePrefSummary(){
+  const el=document.getElementById('prefsum'); if(!el) return;
+  if(!prefsSet()){ el.textContent='not set — this list is ranked for nobody in particular'; return; }
+  const nm=(list,sel)=>sel.map(v=>{
+    const hit=list.find(x=>(Array.isArray(x)?x[0]:x)===v); return Array.isArray(hit)?hit[1]:hit; });
+  const parts=[];
+  if(PREFS.fields.length)  parts.push(nm(FIELDS,PREFS.fields).join(', '));
+  if(PREFS.regions.length) parts.push(nm(REGIONS,PREFS.regions).join(', '));
+  if(PREFS.tracks.length)  parts.push(PREFS.tracks.join(', '));
+  el.textContent = parts.join('  ·  ');
+}
+function afterPrefs(){
+  applyScores(); updatePrefSummary(); saveLocal(); maybeSortByFit(); renderTable();
+}
+/* Setting a preference should visibly do something. Switch the table to fit order the
+   first time it has preferences to work with — but never override a sort the viewer
+   picked by clicking a column header. */
+function maybeSortByFit(){
+  if(!SHARED || !prefsSet() || loadUI().sortK) return;
+  if(sortK==='fit') return;
+  sortK='fit'; sortA=true; setArrow();
+}
+
+/* ---------- backup ---------- */
+function refreshBackup(){
+  if(!SHARED) return;
+  const out=document.getElementById('bkout'); if(!out) return;
+  out.value = JSON.stringify({v:1, saved:new Date().toISOString(),
+                              picks:STATE.picks, prefs:PREFS});
+}
+function wireBackup(){
+  if(!SHARED) return;
+  const msg=document.getElementById('bkmsg'), rmsg=document.getElementById('bkrmsg');
+  document.getElementById('bkcopy').addEventListener('click',async()=>{
+    const ta=document.getElementById('bkout');
+    try{ await navigator.clipboard.writeText(ta.value); msg.textContent='copied'; }
+    catch(e){ ta.focus(); ta.select(); msg.textContent='press ⌘C / Ctrl+C to copy'; }
+    setTimeout(()=>{msg.textContent='';},2500);
+  });
+  document.getElementById('bkrestore').addEventListener('click',()=>{
+    const raw=document.getElementById('bkin').value.trim();
+    if(!raw){ rmsg.textContent='nothing pasted'; return; }
+    let rec=null;
+    try{ rec=JSON.parse(raw); }catch(e){ rmsg.textContent='that is not a backup — check the paste'; return; }
+    if(!rec || typeof rec!=='object' || !rec.picks){ rmsg.textContent='no tracked jobs in that text'; return; }
+    STATE.picks = rec.picks;
+    Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
+    PREFS = normPrefs(rec.prefs);
+    const n=Object.keys(STATE.picks).length;
+    saveLocal(); renderPrefs(); applyScores(); renderAll();
+    rmsg.textContent = 'restored '+n+(n===1?' job':' jobs');
+    document.getElementById('bkin').value='';
+  });
+}
+
+/* Private notes never enter the published page — they live in this browser only. */
+const PK='jm_priv_';
+function getPriv(id){ try{ return localStorage.getItem(PK+id)||''; }catch(e){ return ''; } }
+function setPriv(id,v){ try{ localStorage.setItem(PK+id,v); }catch(e){} }
+
+function picked(id){ return !!STATE.picks[id]; }
+function toggle(id){
+  if(readOnly) return;
+  if(STATE.picks[id]) delete STATE.picks[id];
+  else STATE.picks[id]=blank();
+  renderAll(); queueSave();
+}
+function setField(id,k,v){
+  if(readOnly||!STATE.picks[id]) return;
+  STATE.picks[id][k]=v; queueSave();
+  if(k==='status') renderAll(); else updateCount();
+}
+function setNote(id,v){ setField(id,'note',v); }
+function updateCount(){
+  const p=Object.values(STATE.picks);
+  document.getElementById('napp').textContent  = p.filter(x=>x.status).length;
+  document.getElementById('npick').textContent = p.filter(x=>!x.status).length;
+}
+
+/* ---------- applications ---------- */
+function renderApps(){
+  const entries = Object.entries(STATE.picks).filter(([id,p])=>p.status && BY[id]);
+  const counts = Object.fromEntries(STAGES.map(st=>[st, entries.filter(([,p])=>p.status===st).length]));
+  document.getElementById('board').innerHTML = STAGES.map(st=>
+    `<div class="bcell ${counts[st]?'on':''}"><b>${counts[st]}</b><span>${esc(st)}</span></div>`).join('');
+  document.getElementById('atag').textContent = entries.length
+    ? entries.length+' application'+(entries.length===1?'':'s')+' in flight' : '';
+
+  if(!entries.length){
+    document.getElementById('apps').innerHTML =
+      `<div class="panel"><div class="empty">No applications yet.${readOnly?'':
+        ' Open <strong>Shortlist</strong> and press <em>Start application</em> on anything you have committed to \u2014 it moves here and your advisors can follow it.'}</div></div>`;
+    updateCount(); return;
+  }
+  document.getElementById('apps').innerHTML = STAGES.map(st=>{
+    const rows = entries.filter(([,p])=>p.status===st)
+      .sort((a,b)=>((BY[a[0]].days==null?9999:BY[a[0]].days)-(BY[b[0]].days==null?9999:BY[b[0]].days)));
+    if(!rows.length) return '';
+    return `<div class="stagegrp"><div class="stagehd"><h3>${esc(st)}</h3>
+      <span class="n">${rows.length}</span></div>${rows.map(([id,p])=>card(id,p,st)).join('')}</div>`;
+  }).join('');
+
+  document.querySelectorAll('[data-f]').forEach(el=>{
+    const [id,k]=el.dataset.f.split('|');
+    el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>setField(id,k,el.value));
+  });
+  document.querySelectorAll('[data-c]').forEach(el=>{
+    const [id,k]=el.dataset.c.split('|');
+    el.addEventListener('change',()=>setField(id,k,el.checked));
+  });
+  document.querySelectorAll('[data-back]').forEach(b=>
+    b.addEventListener('click',()=>setField(b.dataset.back,'status','')));
+  document.querySelectorAll('[data-priv]').forEach(t=>
+    t.addEventListener('input',()=>setPriv(t.dataset.priv,t.value)));
+  document.querySelectorAll('[data-anote]').forEach(i=>
+    i.addEventListener('input',()=>setNote(i.dataset.anote,i.value)));
+  updateCount();
+}
+
+function card(id,p,st){
+  const d=BY[id];
+  const stage = readOnly
+    ? `<span class="pill p-tt">${esc(p.status)}</span>`
+    : `<select class="stagesel" data-f="${esc(id)}|status">${STAGES.map(o=>
+        `<option value="${esc(o)}"${p.status===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  const when = p.status!=='Submitted' ? ''
+    : readOnly
+      ? (p.applied?`<span class="when">Submitted ${esc(p.applied)}</span>`:'')
+      : `<label class="when">Submitted on
+          <input type="date" data-f="${esc(id)}|applied" value="${esc(p.applied||'')}"></label>`;
+  const checks = CHECKS.map(([k,label])=>
+    `<label class="chk${p[k]?' on':''}">
+       <input type="checkbox" data-c="${esc(id)}|${k}"${p[k]?' checked':''}${readOnly?' disabled':''}>
+       <span>${esc(label)}</span></label>`).join('');
+  return `<article class="app s-${st.toLowerCase()}">
+    <div class="top">
+      <div><h4>${esc(d.title)}</h4>
+        <div class="inst">${esc(d.inst)}${d.unit?' &middot; '+esc(d.unit):''}</div></div>
+      <div class="due ${dcls(d.days)}">${esc(d.dl||'no deadline')}${d.days!=null?' &middot; '+d.days+'d':''}</div>
+    </div>
+    <div class="ctrls">${stage}${when}<div class="checks">${checks}</div></div>
+    ${readOnly
+      ? (p.note?`<div class="nextline"><span class="lbl">Note</span><span>${esc(p.note)}</span></div>`:'')
+      : `<input class="note" data-anote="${esc(id)}" value="${esc(p.note)}"
+           placeholder="${SHARED?'Note \u2014 kept in this browser':'Shared note \u2014 your advisors can read this'}">`}
+    <div class="acts">
+      <a class="txt" href="${esc(d.url)}" target="_blank" rel="noopener">JOE listing &#8599;</a>
+      ${readOnly?'':`<button class="txt" data-back="${esc(id)}">Move back to shortlist</button>`}
+    </div>
+    ${SHARED?'':`<details class="priv"><summary>Private note</summary>
+      <textarea data-priv="${esc(id)}" placeholder="Only in this browser. Never published, never sent anywhere.">${esc(getPriv(id))}</textarea>
+      <div class="privtag">Stored in this browser only \u2014 it is not in the published page, so it does not
+        follow you to another device and Claude cannot read it.</div>
+    </details>`}
+  </article>`;
+}
+
+/* ---------- shortlist ---------- */
+function renderShort(){
+  const ids = Object.keys(STATE.picks).filter(id=>BY[id] && !STATE.picks[id].status);
+  const items = ids.map(id=>BY[id]).sort((a,b)=>
+    (a.days==null?9999:a.days)-(b.days==null?9999:b.days));
+  document.getElementById('stag').className='note';
+  document.getElementById('stag').textContent = items.length
+    ? items.length+' position'+(items.length===1?'':'s')+', soonest deadline first'
+    : '';
+  document.getElementById('slist').innerHTML = items.length ? items.map(d=>`
+    <article class="sitem">
+      <div>
+        <div class="hd"><h3>${esc(d.title)}</h3>
+          <span class="pill ${TRACK[d.track]||'p-pv'}">${esc(d.track)}</span></div>
+        <div class="in">${esc(d.inst)}${d.unit?' &middot; '+esc(d.unit):''}</div>
+      </div>
+      <div class="sact">
+        <a class="txt" href="${esc(d.url)}" target="_blank" rel="noopener">JOE listing &#8599;</a>
+        ${readOnly?'':`<button class="txt" data-start="${esc(d.id)}">Start application</button>
+        <button class="txt" data-drop="${esc(d.id)}">Remove</button>`}
+      </div>
+      <div class="me">
+        <span class="${dcls(d.days)}">Deadline ${esc(d.dl||'not stated')}${d.days!=null?' &middot; '+d.days+' days':''}</span>
+        <span>${esc(d.loc||'location not stated')}</span>
+        <span>JEL ${esc(d.jel||'—')}</span>
+        ${d.mats?`<span>Needs: ${esc(d.mats)}</span>`:''}
+      </div>
+      <input class="note" data-note="${esc(d.id)}" value="${esc((STATE.picks[d.id]||{}).note||'')}"
+        placeholder="${SHARED?'Why this one — fit, people, what to mention':'Why this one — fit, people, notes for your advisors'}" ${readOnly?'readonly':''}>
+    </article>`).join('')
+    : `<div class="panel"><div class="empty">Nothing waiting.${readOnly?'':
+        ' Star anything in <strong>All listings</strong> to park it here, then press <em>Start application</em> once you commit.'}</div></div>`;
+  document.querySelectorAll('[data-drop]').forEach(b=>
+    b.addEventListener('click',()=>toggle(b.dataset.drop)));
+  document.querySelectorAll('[data-start]').forEach(b=>
+    b.addEventListener('click',()=>setField(b.dataset.start,'status','Applying')));
+  document.querySelectorAll('[data-note]').forEach(i=>
+    i.addEventListener('input',()=>setNote(i.dataset.note,i.value)));
+  updateCount();
+}
+
+/* ---------- soon + screened ---------- */
+document.getElementById('soon').innerHTML = SOON.map(d=>{
+  const u=d.days<=7?'u0':d.days<=14?'u1':'u2';
+  return `<article class="card ${u}">
+    <div class="cd"><span class="cdate">${esc(d.dl)}</span><span class="days">${d.days} days</span>
+      <a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
+         title="Open on JOE" aria-label="Open ${esc(d.title)} on JOE">&#8599;</a></div>
+    <div class="ti">${esc(d.title)}</div><div class="in">${esc(d.inst)}</div>
+    <div class="me">${esc(d.track)}${d.loc?' · '+esc(d.loc):''}</div></article>`;
+}).join('') || '<div class="panel"><div class="empty">Nothing closing in the next 30 days.</div></div>';
+
+document.getElementById('outlist').innerHTML = OUT.map(d=>
+  `<div class="outrow"><span class="why">${esc(d.screen)}</span>
+   <strong>${esc(d.inst)}</strong> &mdash; ${esc(d.title)}
+   <span class="in">${esc(d.unit||'')}</span></div>`).join('');
+
+/* ---------- table ---------- */
+const FILTERS=[['track','Academic TT'],['track','Postdoc/Visiting'],['track','Policy/Gov'],
+               ['track','Private sector'],
+               ['f', SHARED?'My fields':'Core field'],
+               ['g', SHARED?'My regions':'Tier 1 geography'],
+               ['p','Shortlisted']];
+let active=new Set(), sortK='posted', sortA=false;   /* newest posting first */
+document.getElementById('chips').innerHTML=FILTERS.map(([k,v],i)=>
+  `<button class="chip" aria-pressed="false" data-i="${i}">${esc(v)}</button>`).join('');
+document.getElementById('chips').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  const i=b.dataset.i; active.has(i)?active.delete(i):active.add(i);
+  b.setAttribute('aria-pressed',active.has(i)?'true':'false');
+  saveUI({chips:[...active]}); renderTable();
+});
+function setArrow(){
+  document.querySelectorAll('th .ar').forEach(a=>a.remove());
+  const th=document.querySelector('th[data-k="'+sortK+'"]'); if(!th) return;
+  const s=document.createElement('span'); s.className='ar'; s.innerHTML=sortA?'&#9650;':'&#9660;';
+  th.appendChild(s);
+}
+document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k;
+  if(sortK===k) sortA=!sortA; else {sortK=k; sortA=(k!=='posted');}  /* dates newest-first by default */
+  setArrow(); saveUI({sortK:sortK,sortA:sortA}); renderTable();
+}));
+document.getElementById('q').addEventListener('input',e=>{
+  saveUI({q:e.target.value}); renderTable();
+});
+
+function renderTable(){
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  const tracks=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='track').map(f=>f[1]);
+  const wf=[...active].some(i=>FILTERS[i][0]==='f'), wg=[...active].some(i=>FILTERS[i][0]==='g');
+  const wp=[...active].some(i=>FILTERS[i][0]==='p');
+  let rows=DATA.filter(d=>{
+    if(tracks.length&&!tracks.includes(d.track)) return false;
+    if(wf&&d.f!==1) return false;
+    if(wg&&d.g!==1) return false;
+    if(wp&&!picked(d.id)) return false;
+    if(q&&!(d.inst+' '+d.title+' '+d.unit+' '+d.kw+' '+d.jel+' '+d.loc).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];
+    if(x==null)return 1; if(y==null)return -1;
+    const c=typeof x==='number'?x-y:String(x).localeCompare(String(y)); return sortA?c:-c;});
+  const nNew=rows.filter(d=>isNew(d.posted)).length;
+  document.getElementById('shown').textContent=rows.length+' of '+DATA.length+' shown'
+    +(nNew?' · '+nNew+' posted in the last '+NEW_DAYS+' days':'');
+  document.getElementById('tb').innerHTML = rows.length? rows.map((d,i)=>`
+    <tr class="row" data-i="${i}">
+      <td><button class="star" data-star="${esc(d.id)}" aria-pressed="${picked(d.id)}"
+        aria-label="Shortlist ${esc(d.title)}" ${readOnly?'disabled':''}>${picked(d.id)?'★':'☆'}</button></td>
+      <td class="mono posted">${esc(d.posted||'—')}${isNew(d.posted)?'<br><span class="newtag">NEW</span>':''}</td>
+      <td class="mono ${dcls(d.days)}">${esc(d.dl||'—')}<br><span style="font-size:11px">${d.days==null?'—':d.days+'d'}</span></td>
+      ${SHARED?`<td><span class="fit" data-n="${fitDots(d.fit)}" title="${esc(fitTitle(d))}"
+        aria-label="Fit: ${fitDots(d.fit)} of 3"><i></i><i></i><i></i></span></td>`:''}
+      <td><span class="ti">${esc(d.inst)}</span>${d.unit?`<br><span class="in">${esc(d.unit)}</span>`:''}</td>
+      <td>${esc(d.title)}${d.screen==='Check'?'<br><span class="flag">check field / rank</span>':''}</td>
+      <td><span class="pill ${TRACK[d.track]||'p-pv'}">${esc(d.track)}</span></td>
+      <td><span class="tier ${d.f===1?'t1':''}">${d.f}</span></td>
+      <td><span class="tier ${d.g===1?'t1':''}">${d.g}</span></td>
+      <td class="in">${esc(d.loc||'—')}</td>
+      <td><a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
+             title="Open on JOE" aria-label="Open ${esc(d.title)} on JOE">&#8599;</a></td>
+    </tr>
+    <tr class="det" hidden data-d="${i}"><td colspan="${NCOL}"><div class="detin">
+      <div><div class="dl">JEL codes</div><div class="dv mono">${esc(d.jel||'—')}</div></div>
+      <div><div class="dl">Materials named in ad</div><div class="dv">${esc(d.mats||'not detected — read the ad')}</div></div>
+      <div><div class="dl">Keywords</div><div class="dv">${esc(d.kw||'—')}</div></div>
+      <div><div class="dl">Salary</div><div class="dv">${esc(d.sal||'not stated')}</div></div>
+      <div><div class="dl">Listing</div><div class="dv"><a class="jl" href="${esc(d.url)}" target="_blank" rel="noopener">Open on JOE &rarr;</a></div></div>
+    </div></td></tr>`).join('')
+    : '<tr><td colspan="'+NCOL+'"><div class="empty">No listings match those filters.</div></td></tr>';
+  document.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',ev=>{
+    ev.stopPropagation(); toggle(b.dataset.star); }));
+  document.querySelectorAll('a.ext').forEach(a=>a.addEventListener('click',e=>e.stopPropagation()));
+  document.querySelectorAll('tr.row').forEach(tr=>tr.addEventListener('click',()=>{
+    const d=document.querySelector(`tr.det[data-d="${tr.dataset.i}"]`); if(d) d.hidden=!d.hidden; }));
+}
+
+function renderAll(){ renderApps(); renderShort(); renderTable(); }
+
+/* ---------- tabs ---------- */
+const TABS=[['t-app','v-app'],['t-short','v-short'],['t-all','v-all'],['t-out','v-out']];
+function showTab(t){
+  TABS.forEach(([t2,v2])=>{
+    const tab=document.getElementById(t2), view=document.getElementById(v2);
+    if(!tab||!view) return;
+    tab.setAttribute('aria-selected', t2===t?'true':'false');
+    view.hidden = (t2!==t);
+  });
+}
+TABS.forEach(([t])=>document.getElementById(t).addEventListener('click',()=>{
+  showTab(t); saveUI({tab:t});
+}));
+
+/* Saving through the HTML form of api.publish reloads this view (the files form does
+   not, but it is not available everywhere). A reload used to drop the reader back on
+   the Applications tab with filters cleared — so which tab, search, filters and sort
+   are in play is kept in sessionStorage and put back on load. Per-viewer UI only:
+   none of it is published. */
+function restoreUI(){
+  const ui=loadUI();
+  if(ui.tab && document.getElementById(ui.tab)) showTab(ui.tab);
+  else if(SHARED) showTab('t-all');   /* first visit: open on the jobs, not an empty tracker */
+  if(typeof ui.q==='string' && ui.q){ document.getElementById('q').value=ui.q; }
+  if(Array.isArray(ui.chips)){
+    active=new Set(ui.chips.filter(i=>FILTERS[i]));
+    document.querySelectorAll('.chip').forEach(b=>
+      b.setAttribute('aria-pressed', active.has(b.dataset.i)?'true':'false'));
+  }
+  if(ui.sortK && document.querySelector('th[data-k="'+ui.sortK+'"]')){
+    sortK=ui.sortK; sortA=!!ui.sortA;
+  }
+  setArrow();
+}
+
+/* Order matters: the shared page must have its stored stars and preferences in hand
+   BEFORE the first render, or it paints an empty tracker and then jumps. */
+if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); }
+else { const th=document.getElementById('th-fit'); if(th) th.remove(); }
+applyScores();
+setFooter();
+restoreUI();
+renderAll();
+initPersistence();
+</script>

@@ -1,0 +1,20 @@
+# Never commit anyone's tracker data — the page keeps it in the viewer's browser,
+# and a backup file dropped in here would publish one person's shortlist to the web.
+*backup*.json
+prior_picks.json
+live_picks.json
+data/state.json
+
+# Pipeline working files. The build regenerates these every run; only index.html
+# and state/joe_snapshot.json are committed.
+pipeline/joe_full.xml
+pipeline/joe_listings_p*.html
+pipeline/cookies.txt
+pipeline/rows.json
+pipeline/flags.json
+pipeline/posted.json
+pipeline/joe_snapshot.json
+pipeline/prior_snapshot.json
+pipeline/site/
+pipeline/job_market_*.html
+*.xlsx
