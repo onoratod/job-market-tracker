@@ -225,6 +225,18 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .warnbar{background:var(--warn-soft);color:var(--warn);border-radius:7px;padding:10px 14px;
   font-size:13px;margin-bottom:18px}
+.wngroup h4{margin:0 0 8px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);font-weight:600}
+.wnrow{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:7px 0;
+  border-bottom:1px solid var(--line-2);font-size:13.5px}
+.wnrow:last-child{border-bottom:none}
+.wnrow .when{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);
+  white-space:nowrap;min-width:88px}
+.wnrow .who{font-weight:500}
+.wnrow .what{color:var(--ink-2)}
+.wnmoved{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--warn);
+  background:var(--warn-soft);border-radius:4px;padding:1px 7px}
+.wnmore{font-size:12.5px;color:var(--muted);padding-top:8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -268,6 +280,13 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 
 <div id="v-all" role="tabpanel" aria-labelledby="t-all" hidden>
   <div id="storagewarn" class="warnbar" hidden></div>
+  <details class="box" id="whatsnew" hidden>
+    <summary>
+      <span class="sumtitle">Since yesterday</span>
+      <span class="sumline" id="wnsum"></span>
+    </summary>
+    <div class="boxin" id="wnin"></div>
+  </details>
   <details class="box" id="prefs" hidden>
     <summary>
       <span class="sumtitle">My preferences</span>
@@ -350,11 +369,14 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 <script id="joe-out" type="application/json">__OUT__</script>
 <script id="joe-soon" type="application/json">__SOON__</script>
 <script id="joe-state" type="application/json">__STATE__</script>
+<script id="joe-digest" type="application/json">__DIGEST__</script>
 
 <script>
 const DATA = JSON.parse(document.getElementById('joe-data').textContent);
 const OUT  = JSON.parse(document.getElementById('joe-out').textContent);
 const SOON = JSON.parse(document.getElementById('joe-soon').textContent);
+const DIGEST = (()=>{ const el=document.getElementById('joe-digest');
+  try{ return el ? JSON.parse(el.textContent) : {}; }catch(e){ return {}; } })();
 let STATE  = JSON.parse(document.getElementById('joe-state').textContent);
 if(!STATE.picks) STATE.picks = {};
 const BY = Object.fromEntries(DATA.map(d=>[d.id,d]));
@@ -718,6 +740,47 @@ function maybeSortByFit(){
   sortK='fit'; sortA=true; setArrow();
 }
 
+/* ---------- since yesterday ---------- */
+/* Built by digest.py from the snapshot the previous run committed. Absent on a first
+   run, and hidden entirely on a quiet day — an empty panel is worse than no panel. */
+function renderDigest(){
+  const box=document.getElementById('whatsnew'); if(!box) return;
+  const D=DIGEST&&DIGEST.counts?DIGEST:null;
+  if(!D || D.first_run || (!D.counts.new && !D.counts.changed && !D.counts.withdrawn)) return;
+  const bits=[];
+  if(D.counts.new) bits.push(D.counts.new+' new');
+  if(D.counts.changed) bits.push(D.counts.changed+' changed');
+  if(D.counts.withdrawn) bits.push(D.counts.withdrawn+' withdrawn');
+  document.getElementById('wnsum').textContent=bits.join(' · ')+' · as of '+esc(D.date||'');
+
+  const line=(d,label)=>`<div class="wnrow">
+      <span class="when">${esc(d.dl||'no deadline')}</span>
+      ${label?`<span class="wnmoved">${esc(label)}</span>`:''}
+      <span class="who">${esc(d.inst||'')}</span>
+      <span class="what">${esc(d.title||'')}</span>
+      ${d.url?`<a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
+         title="Open on JOE">&#8599;</a>`:''}
+    </div>`;
+  const group=(title,items,labeller)=>{
+    if(!items||!items.length) return '';
+    const shown=items.slice(0,12).map(d=>line(d, labeller?labeller(d):'')).join('');
+    const rest=items.length-12;
+    return `<div class="wngroup"><h4>${esc(title)}</h4>${shown}`
+      + (rest>0?`<div class="wnmore">and ${rest} more &mdash; they are in the table below</div>`:'')
+      + `</div>`;
+  };
+  const movedLabel=d=>(d.moved||[]).map(m=>
+    m.field==='deadline'&&m.from&&m.to ? 'deadline '+m.from.slice(0,10)+' \u2192 '+m.to.slice(0,10)
+    : m.field).join(', ');
+
+  document.getElementById('wnin').innerHTML =
+      group('New listings', D['new'])
+    + group('Changed', D.changed, movedLabel)
+    + group('No longer on JOE', D.withdrawn);
+  box.hidden=false;
+  box.open=true;
+}
+
 /* ---------- backup ---------- */
 function refreshBackup(){
   if(!SHARED) return;
@@ -1029,6 +1092,7 @@ function restoreUI(){
 
 /* Order matters: the shared page must have its stored stars and preferences in hand
    BEFORE the first render, or it paints an empty tracker and then jumps. */
+renderDigest();
 if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); }
 else { const th=document.getElementById('th-fit'); if(th) th.remove(); }
 applyScores();

@@ -54,9 +54,14 @@ def standalone(fragment):
             f'<link rel="icon" href="{FAVICON}">\n'
             '</head>\n<body>\n' + fragment + '\n</body>\n</html>\n')
 
+# What changed since the last run, written by digest.py. Embedded in the page so a
+# reader sees it where they already are, instead of in a notification somewhere else.
+DIGEST = json.load(open('digest.json')) if _os.path.exists('digest.json') else {}
+
 def build(mode, state, outfile):
     TPL = open('page_template.html').read()
     html = (TPL.replace('__MODE__', mode)
+               .replace('__DIGEST__', j(DIGEST))
                .replace('__DATA__', j(el)).replace('__OUT__', j(out)).replace('__SOON__', j(soon))
                .replace('__STATE__', j(state)).replace('__PULLED__', TODAY.strftime('%b %-d, %Y'))
                .replace('__NEL__', str(len(el))).replace('__NF1__', str(sum(1 for d in el if d['f']==1)))

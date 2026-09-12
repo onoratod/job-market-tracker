@@ -14,12 +14,14 @@ Four pieces, each with one job.
 ```
 index.html                     the page Pages serves (generated — do not hand-edit)
 state/joe_snapshot.json        one entry per listing: fingerprint, first_seen, posted, deadline
+state/digest.json              what changed on the last run: new, changed, withdrawn
 pipeline/
   fetch.sh                     JOE full XML + every listings page
   posted.py                    JOE_ID -> posting date
   score.py                     parse XML, assign field / geography / track tiers
   classify.py                  discipline and rank screens
   merge.py                     join, fingerprint, carry first_seen forward
+  digest.py                    diff against yesterday's snapshot -> digest.json
   dash2.py                     render page_template.html into the finished page
   page_template.html           the page itself: markup, styling and all browser logic
 .github/workflows/refresh.yml  the daily job
@@ -36,10 +38,11 @@ pipeline/
    them** — that means JOE changed its markup, and a half-dated feed would mis-sort a page that opens
    newest-first.
 5. `score.py`, `classify.py`, `merge.py` parse, screen, join and fingerprint.
-6. `dash2.py` renders the page.
-7. A guard aborts the run if the board came back with under 80% of yesterday's listings.
-8. `index.html` and the snapshot are committed **only if they changed**, then pushed.
-9. Pages sees the push and redeploys, usually within a minute.
+6. `digest.py` diffs the new snapshot against yesterday's and writes `digest.json`.
+7. `dash2.py` renders the page, embedding the digest.
+8. A guard aborts the run if the board came back with under 80% of yesterday's listings.
+9. `index.html`, the snapshot and the digest are committed **only if they changed**, then pushed.
+10. Pages sees the push and redeploys, usually within a minute.
 
 ## How "new" is known
 
@@ -51,6 +54,17 @@ every day, the repository's history doubles as a record of how the board moved a
 
 `first_seen` (when this pipeline first saw a listing) and `posted` (the date JOE published it) are
 different things and must not be substituted for one another. Only `posted` is shown to viewers.
+
+## Since yesterday
+
+`digest.py` turns the snapshot comparison into `state/digest.json`: listings that are new, ones whose
+fingerprint moved (naming the field when it is the deadline, title or institution, and saying
+"details" honestly when the change was elsewhere), and ones that have left JOE. `dash2.py` embeds it,
+and the page shows it as a panel at the top of All listings — hidden entirely on a quiet day, because
+an empty panel is worse than no panel.
+
+Anything that wants the summary without opening the page — a notifier, a weekly mail — should read
+`state/digest.json` from the repository rather than re-deriving it.
 
 ## Privacy model
 
