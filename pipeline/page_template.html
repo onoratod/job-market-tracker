@@ -37,6 +37,9 @@ h1{font-size:23px;letter-spacing:-.01em}
 .counts b{font-size:19px;font-weight:500;color:var(--accent-ink);display:block;line-height:1.2}
 .counts span{color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
 .tabs{max-width:1220px;margin:0 auto;padding:12px 24px 0;display:flex;gap:2px;align-items:flex-end}
+/* The header is sticky, so the first panel element would otherwise sit flush against
+   the tab strip with nothing between them. */
+[role="tabpanel"]{padding-top:24px}
 .tab{padding:8px 15px;border:1px solid transparent;border-bottom:none;border-radius:7px 7px 0 0;
   background:none;color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer;position:relative;top:1px}
 .tab[aria-selected="true"]{background:var(--bg);border-color:var(--line);color:var(--ink);font-weight:500}
@@ -70,6 +73,23 @@ input[type=search]{flex:1;min-width:210px;padding:9px 12px;border:1px solid var(
   background:var(--surface);color:var(--ink);font:inherit;font-size:14px}
 input[type=search]:focus,button:focus-visible,.chip:focus-visible,.note:focus{outline:2px solid var(--accent);outline-offset:2px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+/* Board picker. A <details> rather than a <select multiple>, which cannot show
+   checkboxes and needs ctrl-click to pick a second option. */
+.dd{position:relative}
+.dd>summary{cursor:pointer;list-style:none;font-family:"IBM Plex Mono",monospace;font-size:12px;
+  padding:6px 11px;border:1px solid var(--line);border-radius:20px;background:var(--surface);
+  color:var(--ink-2);white-space:nowrap}
+.dd>summary::-webkit-details-marker{display:none}
+.dd>summary::after{content:"\25BE";margin-left:7px;color:var(--muted)}
+.dd>summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.dd[data-on]>summary{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
+.ddin{position:absolute;z-index:15;top:calc(100% + 5px);left:0;min-width:180px;padding:6px;
+  background:var(--surface);border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow)}
+.ddopt{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:6px;cursor:pointer;
+  font-size:13px;white-space:nowrap}
+.ddopt:hover{background:var(--surface-2)}
+.ddnote{padding:5px 9px 3px;font-size:11px;color:var(--muted);
+  font-family:"IBM Plex Mono",monospace}
 .chip{padding:6px 11px;border:1px solid var(--line);border-radius:20px;background:var(--surface);
   color:var(--ink-2);font:inherit;font-size:12.5px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
@@ -96,8 +116,11 @@ tr.row{cursor:pointer} tr.row:hover td{background:var(--surface-2)}
 .flag{font-size:11px;color:var(--warn);font-family:"IBM Plex Mono",monospace}
 .srcb{display:inline-block;font-size:9.5px;letter-spacing:.06em;padding:1px 5px;border-radius:3px;
   border:1px solid var(--line);color:var(--muted);font-family:"IBM Plex Mono",monospace;
-  vertical-align:1px;margin-left:6px}
+  vertical-align:1px}
 .srcb[data-s="ejm"]{border-color:transparent;background:var(--warn-soft);color:var(--warn)}
+/* The board column earns its place only when there is more than one board. */
+th.bcol,td.bcol{width:1%;white-space:nowrap}
+[data-onesrc] .bcol{display:none}
 .newtag{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.06em;padding:1px 5px;
   border-radius:3px;background:var(--accent-soft);color:var(--accent-ink);font-family:"IBM Plex Sans",sans-serif}
 .posted{color:var(--ink-2)}
@@ -251,7 +274,7 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
     <div class="counts">
       <div><b>__NEL__</b><span>listings</span></div>
       <div><b id="nf1">__NF1__</b><span id="nf1lab">core field</span></div>
-      <div><b>__NSOON__</b><span>close in 30d</span></div>
+      <div><b>__NSOON__</b><span>close in 7d</span></div>
       <div><b id="napp">0</b><span>applications</span></div>
       <div><b id="npick">0</b><span>shortlisted</span></div>
     </div>
@@ -300,18 +323,23 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
     <div class="boxin" id="prefsin"></div>
   </details>
   <section>
-    <div class="shead"><h2>Closing soon</h2><span class="note">next 30 days</span></div>
+    <div class="shead"><h2>Closing soon</h2><span class="note">next 7 days</span></div>
     <div class="soon" id="soon"></div>
   </section>
   <section>
     <div class="shead"><h2>All listings</h2><span class="note" id="shown"></span></div>
     <div class="controls">
       <input type="search" id="q" placeholder="Search institution, title, department, keyword&hellip;" aria-label="Search listings">
+      <details class="dd" id="srcdd" hidden>
+        <summary id="srcsum">All boards</summary>
+        <div class="ddin" id="srcin"></div>
+      </details>
       <div class="chips" id="chips"></div>
     </div>
     <div class="tablewrap"><table>
       <thead><tr>
         <th class="nosort" aria-label="Shortlist"></th>
+        <th class="bcol" data-k="src">Board</th>
         <th data-k="posted">Posted <span class="ar">&#9660;</span></th>
         <th data-k="days">Deadline</th>
         <th data-k="fit" id="th-fit">Fit</th>
@@ -422,7 +450,7 @@ function saveUI(patch){
               anybody else's list. */
 const MODE='__MODE__', SHARED = (MODE === 'shared');
 const LOCAL_KEY = 'jm_local_v1';
-const NCOL = SHARED ? 11 : 10;        /* the shared edition carries a Fit column */
+const NCOL = SHARED ? 12 : 11;        /* the shared edition carries a Fit column */
 
 function setFooter(){
   const f=document.getElementById('foot');
@@ -1010,15 +1038,28 @@ function renderShort(){
 }
 
 /* ---------- soon + screened ---------- */
+/* Declared here rather than with the table because the cards below need it too. */
+/* Sorted by the name a reader sees, not by the internal key — otherwise "EconJobMarket"
+   lists above "AEA JOE" because 'ejm' sorts before 'joe'. */
+const SOURCES=[...new Set(DATA.map(d=>d.src||'joe'))]
+  .sort((a,b)=>String(SRCFULL[a]||a).localeCompare(String(SRCFULL[b]||b)));
+if(SOURCES.length<2) document.body.setAttribute('data-onesrc','');
+
 document.getElementById('soon').innerHTML = SOON.map(d=>{
-  const u=d.days<=7?'u0':d.days<=14?'u1':'u2';
+  /* Re-graded for a one-week panel: at 30 days everything here was "urgent". */
+  const u=d.days<=2?'u0':d.days<=4?'u1':'u2';
+  const board=SRCFULL[d.src||'joe']||'the board';
   return `<article class="card ${u}">
-    <div class="cd"><span class="cdate">${esc(d.dl)}</span><span class="days">${d.days} days</span>
+    <div class="cd"><span class="cdate">${esc(d.dl)}</span><span class="days">${
+        d.days===0?'today':d.days===1?'1 day':d.days+' days'}</span>
       <a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
-         title="Open on JOE" aria-label="Open ${esc(d.title)} on JOE">&#8599;</a></div>
-    <div class="ti">${esc(d.title)}</div><div class="in">${esc(d.inst)}</div>
+         title="Open on ${esc(board)}" aria-label="Open ${esc(d.title)} on ${esc(board)}">&#8599;</a></div>
+    <div class="ti">${esc(d.title)}</div>
+    <div class="in">${esc(d.inst)}${SOURCES.length>1?` <span class="srcb"
+      data-s="${esc(d.src||'joe')}" title="${esc(board)}">${
+      esc(SRCNAME[d.src||'joe']||d.src||'')}</span>`:''}</div>
     <div class="me">${esc(d.track)}${d.loc?' · '+esc(d.loc):''}</div></article>`;
-}).join('') || '<div class="panel"><div class="empty">Nothing closing in the next 30 days.</div></div>';
+}).join('') || '<div class="panel"><div class="empty">Nothing closing in the next 7 days.</div></div>';
 
 document.getElementById('outlist').innerHTML = OUT.map(d=>
   `<div class="outrow"><span class="why">${esc(d.screen)}</span>
@@ -1026,15 +1067,40 @@ document.getElementById('outlist').innerHTML = OUT.map(d=>
    <span class="in">${esc(d.unit||'')}</span></div>`).join('');
 
 /* ---------- table ---------- */
-const SOURCES=[...new Set(DATA.map(d=>d.src||'joe'))];
 const FILTERS=[['track','Academic TT'],['track','Postdoc/Visiting'],['track','Policy/Gov'],
                ['track','Private sector'],
                ['f', SHARED?'My fields':'Core field'],
                ['g', SHARED?'My regions':'Tier 1 geography'],
-               ['p','Shortlisted']]
-  /* Only offer a board filter when there is more than one board to choose between. */
-  .concat(SOURCES.length>1 ? SOURCES.map(s=>['src', SRCFULL[s]||s]) : []);
+               ['p','Shortlisted']];
 let active=new Set(), sortK='posted', sortA=false;   /* newest posting first */
+
+/* ---------- board picker ---------- */
+/* An empty selection means every board, which is what someone who has never opened
+   this control expects — not an empty table. */
+let srcSel=new Set();
+function srcLabel(){
+  const dd=document.getElementById('srcdd'), sum=document.getElementById('srcsum');
+  if(!dd||!sum) return;
+  const picks=[...srcSel];
+  sum.textContent = !picks.length ? 'All boards'
+    : picks.length===1 ? (SRCFULL[picks[0]]||picks[0])
+    : picks.length+' of '+SOURCES.length+' boards';
+  if(picks.length) dd.setAttribute('data-on',''); else dd.removeAttribute('data-on');
+}
+if(SOURCES.length>1){
+  const dd=document.getElementById('srcdd'); dd.hidden=false;
+  document.getElementById('srcin').innerHTML =
+      SOURCES.map(s=>`<label class="ddopt"><input type="checkbox" value="${esc(s)}">
+        <span>${esc(SRCFULL[s]||s)}</span></label>`).join('')
+    + '<div class="ddnote">none ticked = every board</div>';
+  document.getElementById('srcin').addEventListener('change',e=>{
+    const cb=e.target.closest('input'); if(!cb) return;
+    cb.checked ? srcSel.add(cb.value) : srcSel.delete(cb.value);
+    srcLabel(); saveUI({srcs:[...srcSel]}); renderTable();
+  });
+  /* Clicking anywhere else closes it — otherwise the panel hangs over the table. */
+  document.addEventListener('click',e=>{ if(!e.target.closest('#srcdd')) dd.open=false; });
+}
 document.getElementById('chips').innerHTML=FILTERS.map(([k,v],i)=>
   `<button class="chip" aria-pressed="false" data-i="${i}">${esc(v)}</button>`).join('');
 document.getElementById('chips').addEventListener('click',e=>{
@@ -1063,13 +1129,12 @@ function renderTable(){
   const tracks=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='track').map(f=>f[1]);
   const wf=[...active].some(i=>FILTERS[i][0]==='f'), wg=[...active].some(i=>FILTERS[i][0]==='g');
   const wp=[...active].some(i=>FILTERS[i][0]==='p');
-  const srcs=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='src').map(f=>f[1]);
   let rows=DATA.filter(d=>{
     if(tracks.length&&!tracks.includes(d.track)) return false;
     if(wf&&d.f!==1) return false;
     if(wg&&d.g!==1) return false;
     if(wp&&!picked(d.id)) return false;
-    if(srcs.length && srcs.indexOf(SRCFULL[d.src||'joe']||d.src)===-1) return false;
+    if(srcSel.size && !srcSel.has(d.src||'joe')) return false;
     if(q&&!(d.inst+' '+d.title+' '+d.unit+' '+d.kw+' '+d.jel+' '+d.loc).toLowerCase().includes(q)) return false;
     return true;
   });
@@ -1083,13 +1148,13 @@ function renderTable(){
     <tr class="row" data-i="${i}">
       <td><button class="star" data-star="${esc(d.id)}" aria-pressed="${picked(d.id)}"
         aria-label="Shortlist ${esc(d.title)}" ${readOnly?'disabled':''}>${picked(d.id)?'★':'☆'}</button></td>
+      <td class="bcol"><span class="srcb" data-s="${esc(d.src||'joe')}"
+        title="${esc(SRCFULL[d.src||'joe']||'')}">${esc(SRCNAME[d.src||'joe']||d.src||'')}</span></td>
       <td class="mono posted">${esc(d.posted||'—')}${isNew(d.posted)?'<br><span class="newtag">NEW</span>':''}</td>
       <td class="mono ${dcls(d.days)}">${esc(d.dl||'—')}<br><span style="font-size:11px">${d.days==null?'—':d.days+'d'}</span></td>
       ${SHARED?`<td><span class="fit" data-n="${fitDots(d.fit)}" title="${esc(fitTitle(d))}"
         aria-label="Fit: ${fitDots(d.fit)} of 3"><i></i><i></i><i></i></span></td>`:''}
-      <td><span class="ti">${esc(d.inst)}</span>${SOURCES.length>1?`<span class="srcb"
-          data-s="${esc(d.src||'joe')}" title="${esc(SRCFULL[d.src||'joe']||'')}">${
-          esc(SRCNAME[d.src||'joe']||d.src||'')}</span>`:''}${
+      <td><span class="ti">${esc(d.inst)}</span>${
           d.unit?`<br><span class="in">${esc(d.unit)}</span>`:''}</td>
       <td>${esc(d.title)}${d.screen==='Check'?'<br><span class="flag">check field / rank</span>':''}</td>
       <td><span class="pill ${TRACK[d.track]||'p-pv'}">${esc(d.track)}</span></td>
@@ -1097,7 +1162,8 @@ function renderTable(){
       <td><span class="tier ${d.g===1?'t1':''}">${d.g}</span></td>
       <td class="in">${esc(d.loc||'—')}</td>
       <td><a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
-             title="Open on JOE" aria-label="Open ${esc(d.title)} on JOE">&#8599;</a></td>
+             title="Open on ${esc(SRCFULL[d.src||'joe']||'the board')}"
+             aria-label="Open ${esc(d.title)} on ${esc(SRCFULL[d.src||'joe']||'the board')}">&#8599;</a></td>
     </tr>
     <tr class="det" hidden data-d="${i}"><td colspan="${NCOL}"><div class="detin">
       <div><div class="dl">${d.nat&&d.nat.length?'Fields, as '+esc(SRCFULL[d.src]||'the board')+' lists them':'JEL codes'}</div>
@@ -1106,7 +1172,7 @@ function renderTable(){
       <div><div class="dl">Materials named in ad</div><div class="dv">${esc(d.mats||'not detected — read the ad')}</div></div>
       <div><div class="dl">Keywords</div><div class="dv">${esc(d.kw||'—')}</div></div>
       <div><div class="dl">Salary</div><div class="dv">${esc(d.sal||'not stated')}</div></div>
-      <div><div class="dl">Listing</div><div class="dv"><a class="jl" href="${esc(d.url)}" target="_blank" rel="noopener">Open on JOE &rarr;</a></div></div>
+      <div><div class="dl">Listing</div><div class="dv"><a class="jl" href="${esc(d.url)}" target="_blank" rel="noopener">Open on ${esc(SRCFULL[d.src||'joe']||'the board')} &rarr;</a></div></div>
     </div></td></tr>`).join('')
     : '<tr><td colspan="'+NCOL+'"><div class="empty">No listings match those filters.</div></td></tr>';
   document.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',ev=>{
@@ -1147,6 +1213,11 @@ function restoreUI(){
     document.querySelectorAll('.chip').forEach(b=>
       b.setAttribute('aria-pressed', active.has(b.dataset.i)?'true':'false'));
   }
+  /* Boards that have since gone out of the feed are dropped rather than filtering
+     everything away for someone who ticked one yesterday. */
+  if(Array.isArray(ui.srcs)) srcSel=new Set(ui.srcs.filter(s=>SOURCES.indexOf(s)!==-1));
+  srcLabel();
+  document.querySelectorAll('#srcin input').forEach(cb=>{ cb.checked=srcSel.has(cb.value); });
   if(ui.sortK && document.querySelector('th[data-k="'+ui.sortK+'"]')){
     sortK=ui.sortK; sortA=!!ui.sortA;
   }

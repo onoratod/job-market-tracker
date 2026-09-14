@@ -37,7 +37,11 @@ def pack(r):
 data = [pack(r) for r in rows]
 el   = [d for d in data if d['ok']]
 out  = [d for d in data if not d['ok']]
-soon = sorted([d for d in el if d['days'] is not None and 0 <= d['days'] <= 30], key=lambda d: d['days'])
+# "Closing soon" is the panel you act on today, so it is one week, not one month —
+# a 30-day list is a reading list. The table still carries every deadline.
+SOON_DAYS = 7
+soon = sorted([d for d in el if d['days'] is not None and 0 <= d['days'] <= SOON_DAYS],
+              key=lambda d: d['days'])
 
 def j(o): return json.dumps(o, separators=(',',':')).replace('<', '\\u003c')
 
