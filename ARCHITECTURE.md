@@ -4,7 +4,7 @@ Four pieces, each with one job.
 
 | Piece | Job |
 |---|---|
-| This repository | Source of truth: pipeline scripts, the generated page, and `state/joe_snapshot.json` — yesterday's memory of the board |
+| This repository | Source of truth: pipeline scripts, the generated page, and `state/joe_snapshot.json` — yesterday's memory of the boards |
 | GitHub Actions | The clock and the machine. Runs the pipeline daily and commits the result |
 | GitHub Pages | The web server. Serves `index.html` at the repository's Pages URL |
 | Each viewer's browser | That viewer's stars, applications, notes and ranking preferences — and nobody else's |
@@ -13,19 +13,65 @@ Four pieces, each with one job.
 
 ```
 index.html                     the page Pages serves (generated — do not hand-edit)
-state/joe_snapshot.json        one entry per listing: fingerprint, first_seen, posted, deadline
+state/joe_snapshot.json        one entry per listing: fingerprint, first_seen, posted, deadline, src
 state/digest.json              what changed on the last run: new, changed, withdrawn
 pipeline/
+  screens.py                   shared by every board: what counts as economics, what is above
+                               assistant level, which employers are policy, the owner's default tiers
+  snapshot.py                  reads the prior snapshot and migrates pre-namespace ids
   fetch.sh                     JOE full XML + every listings page
   posted.py                    JOE_ID -> posting date
-  score.py                     parse XML, assign field / geography / track tiers
-  classify.py                  discipline and rank screens
-  merge.py                     join, fingerprint, carry first_seen forward
+  score.py                     parse JOE XML, assign field / geography / track tiers -> joe_rows.json
+  classify.py                  discipline and rank screens for JOE -> flags.json
+  ejm_fetch.sh                 every EconJobMarket listings page
+  ejm_parse.py                 parse those pages (+ detail pages for location) -> ejm_rows.json
+  merge.py                     join every board, namespace ids, fingerprint, carry first_seen forward
   digest.py                    diff against yesterday's snapshot -> digest.json
   dash2.py                     render page_template.html into the finished page
   page_template.html           the page itself: markup, styling and all browser logic
 .github/workflows/refresh.yml  the daily job
 ```
+
+## The boards
+
+| Source | id prefix | Where the dates come from |
+|---|---|---|
+| AEA JOE | `joe:` | Deadline from the XML; **posting date only from the paginated listings pages** |
+| EconJobMarket | `ejm:` | All three dates on the listing itself, told apart by CSS class: `bg-info` posted, `negative` deadline, grey expiry |
+
+Ids are namespaced because the two boards number their listings independently, and a collision
+would silently attach somebody's star to the wrong job. Stars saved before namespacing existed
+carry bare ids; `snapshot.py` and the page both read those as JOE.
+
+A job advertised on both boards is kept twice, deliberately. Seeing a job twice costs a few
+seconds; hiding one costs a job.
+
+## The contract a board must meet
+
+Adding board #3 means writing one fetch script and one parse script. Nothing else in the pipeline
+should need to change. The parse script writes `<board>_rows.json`: a list of objects carrying at
+minimum
+
+```
+id  src  inst  unit  title  section  srank  deadline  days  posted  jel  jtier
+loc  country  state  city  gtier  salary  discipline  rank_fit  adlen  url
+```
+
+and four rules:
+
+1. **Use `screens.py`.** Discipline, rank and the owner's default tiers come from there, never from
+   a board's own copy. The failure that matters is a listing screened out on one board and kept on
+   another for no reason anybody can see.
+2. **`posted` is the board's publication date.** Never `first_seen`, which is when *we* first saw
+   it. Only `posted` is shown to viewers, and conflating the two makes a six-week-old job look new.
+3. **All or nothing.** Write no output file unless the whole parse succeeded. A half-parsed board is
+   worse than a missing one, because a missing one announces itself and a half-parsed one does not.
+4. **Cheap on reruns.** `ejm_parse.py` fetches a detail page only for listings the prior snapshot
+   has never seen — the location it found is cached in the snapshot. A board that re-fetches every
+   detail page every day will eventually get itself blocked.
+
+Then add one `continue-on-error: true` step to the workflow, between JOE and the merge. `merge.py`
+picks the file up if it is there and says so if it is not.
 
 ## The daily cycle
 
@@ -37,31 +83,56 @@ pipeline/
 4. `posted.py` maps each listing to its posting date and **exits non-zero if it cannot date 95% of
    them** — that means JOE changed its markup, and a half-dated feed would mis-sort a page that opens
    newest-first.
-5. `score.py`, `classify.py`, `merge.py` parse, screen, join and fingerprint.
-6. `digest.py` diffs the new snapshot against yesterday's and writes `digest.json`.
-7. `dash2.py` renders the page, embedding the digest.
-8. A guard aborts the run if the board came back with under 80% of yesterday's listings.
-9. `index.html`, the snapshot and the digest are committed **only if they changed**, then pushed.
-10. Pages sees the push and redeploys, usually within a minute.
+5. `score.py` and `classify.py` parse and screen JOE.
+6. `ejm_fetch.sh` and `ejm_parse.py` do the same for EconJobMarket. **This step is allowed to fail**
+   without failing the run.
+7. `merge.py` joins whatever boards produced output, namespaces the ids, fingerprints every listing
+   and writes the snapshot — including a `sources` block recording each board's count and the last
+   date it was seen.
+8. `digest.py` diffs the new snapshot against yesterday's and writes `digest.json`.
+9. `dash2.py` renders the page, embedding the digest and the sources block.
+10. A guard aborts the run if **any board** came back with under 80% of yesterday's listings.
+11. `index.html`, the snapshot and the digest are committed **only if they changed**, then pushed.
+12. Pages sees the push and redeploys, usually within a minute.
+
+## When a board fails
+
+This is the case worth understanding, because it is the one that will actually happen.
+
+If EconJobMarket is down or changes its markup, `ejm_parse.py` writes nothing, the step is marked
+failed but the run continues, and `merge.py` builds from JOE alone. Three things then hold:
+
+- The snapshot's `sources` block records `ejm` with a count of 0 and the date it was last seen, so
+  the page can say "EconJobMarket could not be read today — showing the other boards" instead of
+  quietly shrinking by a third.
+- `digest.py` does **not** report that board's listings as withdrawn. Calling 97 live jobs withdrawn
+  would be the most alarming possible way to report a failed fetch.
+- The collapse guard is checked per board, so a missing board does not block the others from
+  publishing — but a board that returns 37 listings where it returned 97 yesterday does, because
+  that is a broken parse rather than news.
+
+Nobody's stars are affected either way: they live in the browser, keyed by id, and reattach when the
+board comes back.
 
 ## How "new" is known
 
 Each listing gets a fingerprint: a hash of title, institution, deadline, section, JEL codes, location,
 salary and text length. Days-remaining is deliberately excluded, so the passage of time never looks
 like a change. Each run compares against the committed snapshot — an unknown id is new, a changed
-fingerprint is an edit, an id missing from JOE has been withdrawn. Because the snapshot is committed
-every day, the repository's history doubles as a record of how the board moved all season.
+fingerprint is an edit, an id missing from a board that *did* report is withdrawn. Because the
+snapshot is committed every day, the repository's history doubles as a record of how the boards moved
+all season.
 
-`first_seen` (when this pipeline first saw a listing) and `posted` (the date JOE published it) are
-different things and must not be substituted for one another. Only `posted` is shown to viewers.
+The first run of a newly added board is an exception: every one of its listings is unknown, and
+itemising 97 of them as "new" is noise. `digest.py` counts that once and names the board instead.
 
 ## Since yesterday
 
 `digest.py` turns the snapshot comparison into `state/digest.json`: listings that are new, ones whose
 fingerprint moved (naming the field when it is the deadline, title or institution, and saying
-"details" honestly when the change was elsewhere), and ones that have left JOE. `dash2.py` embeds it,
-and the page shows it as a panel at the top of All listings — hidden entirely on a quiet day, because
-an empty panel is worse than no panel.
+"details" honestly when the change was elsewhere), and ones that have left a board. `dash2.py` embeds
+it, and the page shows it as a panel at the top of All listings — hidden entirely on a quiet day,
+because an empty panel is worse than no panel.
 
 Anything that wants the summary without opening the page — a notifier, a weekly mail — should read
 `state/digest.json` from the repository rather than re-deriving it.
@@ -71,7 +142,8 @@ Anything that wants the summary without opening the page — a notifier, a weekl
 Nobody's personal data is in this repository or in the published page. The page ships with an empty
 `picks` object; every viewer's stars, application stages, notes and preferences are written to their
 own browser's local storage, and never leave it. That is also why one file ranks differently for each
-person: the fit score is computed in the browser against whatever preferences that viewer set.
+person: the fit score is computed in the browser against whatever preferences that viewer set. The
+tiers in `screens.py` are only the defaults the pipeline sorts by before anyone sets preferences.
 
 Consequences worth knowing: clearing site data or switching machines starts a viewer from nothing, so
 the page has a **Back up or restore** panel; and nothing outside the browser can read a viewer's list,
@@ -84,7 +156,7 @@ list: one pasted backup makes one person's shortlist public.
 
 Every guard fails the same way — don't commit. The URL keeps serving the last good page, and GitHub
 emails the repository owner when a scheduled run fails. A stale page announces itself: the header
-shows the date of the pull it was built from.
+shows the date of the pull it was built from, and which boards it was built from.
 
 ## Operational notes
 
@@ -93,6 +165,8 @@ shows the date of the pull it was built from.
 - **Paused schedules.** GitHub pauses scheduled workflows in repositories that go quiet for a long
   stretch. If refreshes stop, check the Actions tab before assuming something broke.
 - **Running it by hand.** Actions tab -> "Refresh JOE listings" -> Run workflow.
+- **Rebasing.** The Action commits `index.html` and `state/` on its own. Hand commits should touch
+  source only, or every `git pull --rebase` fights the runner over a generated file.
 
 ## Changing the page
 
@@ -105,9 +179,12 @@ To work on it locally, from `pipeline/`:
 
 ```
 sh fetch.sh && python3 posted.py && python3 score.py && python3 classify.py \
-  && python3 merge.py && python3 dash2.py
+  && sh ejm_fetch.sh && python3 ejm_parse.py \
+  && python3 merge.py && python3 digest.py && python3 dash2.py
 open site/index.html
 ```
+
+Drop the two `ejm_` lines to rebuild from JOE alone; `merge.py` will say it is building from JOE only.
 
 Commit `index.html` along with the template change, or the published page stays on the old render
 until the next scheduled run.

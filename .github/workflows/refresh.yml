@@ -36,30 +36,60 @@ jobs:
           if [ -f ../state/joe_snapshot.json ]; then
             cp ../state/joe_snapshot.json prior_snapshot.json
           else
-            echo "No prior snapshot - treating this as the first run."
+            echo "No prior snapshot — treating this as the first run."
           fi
 
           sh fetch.sh
           python3 posted.py      # exits non-zero if it cannot date 95% of listings
           python3 score.py
           python3 classify.py
+
+      # A board that cannot be read contributes nothing and the rest of the feed still
+      # publishes. ejm_parse.py writes no file unless the whole parse succeeded, so a
+      # failure here means merge.py builds from JOE alone and the page says EJM is missing.
+      - name: EconJobMarket
+        id: ejm
+        working-directory: pipeline
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          sh ejm_fetch.sh
+          python3 ejm_parse.py
+
+      - name: Merge, diff and render
+        working-directory: pipeline
+        run: |
+          set -euo pipefail
           python3 merge.py
           python3 digest.py     # what changed since the last run -> digest.json
           python3 dash2.py
 
+      # Checked per board, not on the total. A board that contributes nothing is an
+      # expected, survivable failure — the page says so and the rest still publishes.
+      # A board that comes back with two thirds of yesterday's listings is a broken
+      # parse wearing the costume of news, and must not be committed.
       - name: Refuse to publish a collapsed feed
         working-directory: pipeline
         run: |
           python3 - <<'PY'
-          import json, os, sys
+          import json, os, sys, collections
+          def src_of(jid, v):
+              return v.get('src') or (jid.split(':', 1)[0] if ':' in jid else 'joe')
           new = json.load(open('joe_snapshot.json'))['listings']
+          counts = collections.Counter(src_of(k, v) for k, v in new.items())
           if os.path.exists('prior_snapshot.json'):
               prior = json.load(open('prior_snapshot.json'))
               prior = prior.get('listings', prior)
-              if len(prior) > 20 and len(new) < 0.8 * len(prior):
-                  sys.exit(f"FATAL: {len(new)} listings today vs {len(prior)} yesterday. "
-                           "That is a broken fetch, not news - publishing nothing.")
-          print(f"{len(new)} listings")
+              was = collections.Counter(src_of(k, v) for k, v in prior.items())
+              for src, before in sorted(was.items()):
+                  now = counts.get(src, 0)
+                  if before > 20 and now == 0:
+                      print(f"NOTE: {src} contributed nothing — publishing without it.")
+                  elif before > 20 and now < 0.8 * before:
+                      sys.exit(f"FATAL: {src} returned {now} listings today vs {before} "
+                               "yesterday. That is a broken parse, not news — "
+                               "publishing nothing.")
+          print(f"{len(new)} listings {dict(counts)}")
           PY
 
       - name: Move the results into place
@@ -77,7 +107,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html state/joe_snapshot.json state/digest.json
           if git diff --quiet --cached; then
-            echo "Nothing changed today - no commit."
+            echo "Nothing changed today — no commit."
           else
             git commit -m "Refresh listings $(date -u +%Y-%m-%d)"
             git push

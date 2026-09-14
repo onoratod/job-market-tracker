@@ -28,7 +28,11 @@ def pack(r):
                 # Raw fields the shared edition scores from in the browser. f/g above are
                 # Danny's tiers, computed in score.py; a classmate's are computed from these.
                 cc=r.get('country',''), st=r.get('state',''),
-                url=f"https://www.aeaweb.org/joe/listing.php?JOE_ID={CYCLE}_{r['id']}")
+                src=r.get('src','joe'),
+                # The board's own field names, shown on expand so the bucket mapping is
+                # visible rather than something a reader has to take on trust.
+                nat=r.get('fields_native') or [],
+                url=r.get('url',''))
 
 data = [pack(r) for r in rows]
 el   = [d for d in data if d['ok']]
@@ -57,6 +61,13 @@ def standalone(fragment):
 # What changed since the last run, written by digest.py. Embedded in the page so a
 # reader sees it where they already are, instead of in a notification somewhere else.
 DIGEST = json.load(open('digest.json')) if _os.path.exists('digest.json') else {}
+SOURCES = snap.get('sources', {})
+
+SRC_LABEL = {'joe': 'AEA JOE', 'ejm': 'EconJobMarket'}
+BOARDS = ' + '.join(SRC_LABEL.get(s, s) for s in
+                    sorted({r.get('src', 'joe') for r in rows},
+                           key=lambda s: 0 if s == 'joe' else 1))
+
 
 def build(mode, state, outfile):
     TPL = open('page_template.html').read()
@@ -64,6 +75,7 @@ def build(mode, state, outfile):
                .replace('__DIGEST__', j(DIGEST))
                .replace('__DATA__', j(el)).replace('__OUT__', j(out)).replace('__SOON__', j(soon))
                .replace('__STATE__', j(state)).replace('__PULLED__', TODAY.strftime('%b %-d, %Y'))
+               .replace('__BOARDS__', BOARDS).replace('__SOURCES__', j(SOURCES))
                .replace('__NEL__', str(len(el))).replace('__NF1__', str(sum(1 for d in el if d['f']==1)))
                .replace('__NSOON__', str(len(soon))).replace('__NOUT__', str(len(out))))
     open(outfile, 'w').write(html)

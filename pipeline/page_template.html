@@ -94,6 +94,10 @@ tr.row{cursor:pointer} tr.row:hover td{background:var(--surface-2)}
   font-size:11px;font-family:"IBM Plex Mono",monospace;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
 .tier.t1{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
 .flag{font-size:11px;color:var(--warn);font-family:"IBM Plex Mono",monospace}
+.srcb{display:inline-block;font-size:9.5px;letter-spacing:.06em;padding:1px 5px;border-radius:3px;
+  border:1px solid var(--line);color:var(--muted);font-family:"IBM Plex Mono",monospace;
+  vertical-align:1px;margin-left:6px}
+.srcb[data-s="ejm"]{border-color:transparent;background:var(--warn-soft);color:var(--warn)}
 .newtag{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.06em;padding:1px 5px;
   border-radius:3px;background:var(--accent-soft);color:var(--accent-ink);font-family:"IBM Plex Sans",sans-serif}
 .posted{color:var(--ink-2)}
@@ -243,7 +247,7 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 <header>
   <div class="hbar">
     <h1>Econ Job Market</h1>
-    <span class="sub">AEA JOE &middot; Aug 1 2026 &ndash; Jan 31 2027 &middot; pulled __PULLED__</span>
+    <span class="sub">__BOARDS__ &middot; Aug 1 2026 &ndash; Jan 31 2027 &middot; pulled __PULLED__</span>
     <div class="counts">
       <div><b>__NEL__</b><span>listings</span></div>
       <div><b id="nf1">__NF1__</b><span id="nf1lab">core field</span></div>
@@ -279,6 +283,7 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 </div>
 
 <div id="v-all" role="tabpanel" aria-labelledby="t-all" hidden>
+  <div id="srcwarn" class="warnbar" hidden></div>
   <div id="storagewarn" class="warnbar" hidden></div>
   <details class="box" id="whatsnew" hidden>
     <summary>
@@ -370,6 +375,7 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 <script id="joe-soon" type="application/json">__SOON__</script>
 <script id="joe-state" type="application/json">__STATE__</script>
 <script id="joe-digest" type="application/json">__DIGEST__</script>
+<script id="joe-sources" type="application/json">__SOURCES__</script>
 
 <script>
 const DATA = JSON.parse(document.getElementById('joe-data').textContent);
@@ -377,11 +383,15 @@ const OUT  = JSON.parse(document.getElementById('joe-out').textContent);
 const SOON = JSON.parse(document.getElementById('joe-soon').textContent);
 const DIGEST = (()=>{ const el=document.getElementById('joe-digest');
   try{ return el ? JSON.parse(el.textContent) : {}; }catch(e){ return {}; } })();
+const SRCSTATE = (()=>{ const el=document.getElementById('joe-sources');
+  try{ return el ? JSON.parse(el.textContent) : {}; }catch(e){ return {}; } })();
 let STATE  = JSON.parse(document.getElementById('joe-state').textContent);
 if(!STATE.picks) STATE.picks = {};
 const BY = Object.fromEntries(DATA.map(d=>[d.id,d]));
 const TRACK={'Academic TT':'p-tt','Postdoc/Visiting':'p-pd','Policy/Gov':'p-po',
-             'Private sector':'p-pv','Nonacademic other':'p-pv','Adjunct':'p-pv'};
+             'Private sector':'p-pv','Nonacademic other':'p-pv','Adjunct':'p-pv','Lecturer':'p-pd'};
+const SRCNAME={joe:'JOE', ejm:'EJM'};
+const SRCFULL={joe:'AEA JOE', ejm:'EconJobMarket'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=d=>d==null?'':d<0?'dneg':d<=14?'dsoon':d<=30?'dmid':'';
 /* Days since JOE posted a listing, computed in the browser so the NEW badge stays
@@ -462,7 +472,14 @@ async function initPersistence(){
     if(r.ok){ const jv = await r.json(); if(jv && jv.picks){
       STATE = jv;
       if(!STATE.picks) STATE.picks={};
-      function migrate(p){
+      /* Stars saved before a second board existed use bare JOE ids. Rename them on load, or
+   they point at listings that no longer answer to those ids and quietly vanish. */
+function migrateIds(picks){
+  const out={};
+  Object.keys(picks||{}).forEach(k=>{ out[k.indexOf(':')===-1 ? 'joe:'+k : k] = picks[k]; });
+  return out;
+}
+function migrate(p){
   p = Object.assign(blank(), p);
   /* Older versions of this page offered Interview/Flyout/Offer/Rejected/Withdrawn.
      Anything not in the current STAGES list lands on the last stage rather than
@@ -517,7 +534,7 @@ function bootLocal(){
   try{ localStorage.setItem(LOCAL_KEY+'.probe','1'); localStorage.removeItem(LOCAL_KEY+'.probe'); }
   catch(e){ storageOK=false; }
   if(rec && typeof rec==='object'){
-    if(rec.picks && typeof rec.picks==='object') STATE.picks = rec.picks;
+    if(rec.picks && typeof rec.picks==='object') STATE.picks = migrateIds(rec.picks);
     if(rec.prefs) PREFS = normPrefs(rec.prefs);
   }
   Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
@@ -577,6 +594,13 @@ async function doSave(){
 const STAGES=['Applying','Submitted'];
 const CHECKS=[['mats','Materials uploaded'],['letters','Letters in']];
 function blank(){ return {note:'',status:'',applied:'',mats:false,letters:false}; }
+/* Stars saved before a second board existed use bare JOE ids. Rename them on load, or
+   they point at listings that no longer answer to those ids and quietly vanish. */
+function migrateIds(picks){
+  const out={};
+  Object.keys(picks||{}).forEach(k=>{ out[k.indexOf(':')===-1 ? 'joe:'+k : k] = picks[k]; });
+  return out;
+}
 function migrate(p){
   p = Object.assign(blank(), p);
   /* Older versions of this page offered Interview/Flyout/Offer/Rejected/Withdrawn.
@@ -618,7 +642,7 @@ const EUROPE=['UNITED KINGDOM','GERMANY','FRANCE','ITALY','SPAIN','NETHERLANDS',
   'CZECH REPUBLIC','GREECE','HUNGARY','LUXEMBOURG'];
 const REGIONS=US_REGIONS.map(r=>[r[0],r[1]])
   .concat([['ca','Canada'],['eu','UK & Europe'],['row','Rest of world']]);
-const TRACKS=['Academic TT','Postdoc/Visiting','Policy/Gov','Private sector','Nonacademic other','Adjunct'];
+const TRACKS=['Academic TT','Lecturer','Postdoc/Visiting','Policy/Gov','Private sector','Nonacademic other','Adjunct'];
 
 let PREFS = normPrefs(null);
 function normPrefs(p){
@@ -740,17 +764,39 @@ function maybeSortByFit(){
   sortK='fit'; sortA=true; setArrow();
 }
 
+/* A board whose parse failed contributes no listings at all — by design, since half a
+   feed is worse than none. Say so on the page: a third of the listings silently absent
+   is exactly the kind of thing nobody notices until they have missed a deadline. */
+function renderSourceState(){
+  const missing = Object.keys(SRCSTATE).filter(s => (SRCSTATE[s]||{}).count === 0);
+  if(!missing.length) return;
+  const el = document.getElementById('srcwarn');
+  el.innerHTML = missing.map(s => {
+    const when = (SRCSTATE[s]||{}).last_seen;
+    return '<strong>' + esc(SRCFULL[s]||s) + ' is missing from this feed.</strong> Last included '
+      + (when ? esc(when) : 'at an unknown date')
+      + ' — its listings are not below, so treat this as a partial board until it returns.';
+  }).join('<br>');
+  el.hidden = false;
+}
+
 /* ---------- since yesterday ---------- */
 /* Built by digest.py from the snapshot the previous run committed. Absent on a first
    run, and hidden entirely on a quiet day — an empty panel is worse than no panel. */
 function renderDigest(){
   const box=document.getElementById('whatsnew'); if(!box) return;
   const D=DIGEST&&DIGEST.counts?DIGEST:null;
-  if(!D || D.first_run || (!D.counts.new && !D.counts.changed && !D.counts.withdrawn)) return;
+  if(!D || D.first_run) return;
+  /* A board added today backfills its whole history at once. Those listings are not
+     "new" in any sense a reader cares about, so digest.py counts them instead of
+     itemising them — but the count still has to be said, or the total silently jumps. */
+  const added=Object.keys(D.first_pull||{});
+  if(!D.counts.new && !D.counts.changed && !D.counts.withdrawn && !added.length) return;
   const bits=[];
   if(D.counts.new) bits.push(D.counts.new+' new');
   if(D.counts.changed) bits.push(D.counts.changed+' changed');
   if(D.counts.withdrawn) bits.push(D.counts.withdrawn+' withdrawn');
+  added.forEach(s=>bits.push((SRCFULL[s]||s)+' added'));
   document.getElementById('wnsum').textContent=bits.join(' · ')+' · as of '+esc(D.date||'');
 
   const line=(d,label)=>`<div class="wnrow">
@@ -759,7 +805,7 @@ function renderDigest(){
       <span class="who">${esc(d.inst||'')}</span>
       <span class="what">${esc(d.title||'')}</span>
       ${d.url?`<a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener"
-         title="Open on JOE">&#8599;</a>`:''}
+         title="Open on ${esc(SRCFULL[d.src||'joe']||'the board')}">&#8599;</a>`:''}
     </div>`;
   const group=(title,items,labeller)=>{
     if(!items||!items.length) return '';
@@ -773,10 +819,17 @@ function renderDigest(){
     m.field==='deadline'&&m.from&&m.to ? 'deadline '+m.from.slice(0,10)+' \u2192 '+m.to.slice(0,10)
     : m.field).join(', ');
 
+  const addedNote = added.map(s =>
+      `<div class="wngroup"><h4>${esc(SRCFULL[s]||s)} added to this feed</h4>`
+    + `<div class="wnmore">${D.first_pull[s]} listings arrived at once, so they are not `
+    + `listed here one by one — they are in the table below, dated as that board dated `
+    + `them.</div></div>`).join('');
+
   document.getElementById('wnin').innerHTML =
-      group('New listings', D['new'])
+      addedNote
+    + group('New listings', D['new'])
     + group('Changed', D.changed, movedLabel)
-    + group('No longer on JOE', D.withdrawn);
+    + group('No longer listed', D.withdrawn);
   box.hidden=false;
   box.open=true;
 }
@@ -803,7 +856,7 @@ function wireBackup(){
     let rec=null;
     try{ rec=JSON.parse(raw); }catch(e){ rmsg.textContent='that is not a backup — check the paste'; return; }
     if(!rec || typeof rec!=='object' || !rec.picks){ rmsg.textContent='no tracked jobs in that text'; return; }
-    STATE.picks = rec.picks;
+    STATE.picks = migrateIds(rec.picks);
     Object.keys(STATE.picks).forEach(id=>{ STATE.picks[id]=migrate(STATE.picks[id]); });
     PREFS = normPrefs(rec.prefs);
     const n=Object.keys(STATE.picks).length;
@@ -973,11 +1026,14 @@ document.getElementById('outlist').innerHTML = OUT.map(d=>
    <span class="in">${esc(d.unit||'')}</span></div>`).join('');
 
 /* ---------- table ---------- */
+const SOURCES=[...new Set(DATA.map(d=>d.src||'joe'))];
 const FILTERS=[['track','Academic TT'],['track','Postdoc/Visiting'],['track','Policy/Gov'],
                ['track','Private sector'],
                ['f', SHARED?'My fields':'Core field'],
                ['g', SHARED?'My regions':'Tier 1 geography'],
-               ['p','Shortlisted']];
+               ['p','Shortlisted']]
+  /* Only offer a board filter when there is more than one board to choose between. */
+  .concat(SOURCES.length>1 ? SOURCES.map(s=>['src', SRCFULL[s]||s]) : []);
 let active=new Set(), sortK='posted', sortA=false;   /* newest posting first */
 document.getElementById('chips').innerHTML=FILTERS.map(([k,v],i)=>
   `<button class="chip" aria-pressed="false" data-i="${i}">${esc(v)}</button>`).join('');
@@ -1007,11 +1063,13 @@ function renderTable(){
   const tracks=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='track').map(f=>f[1]);
   const wf=[...active].some(i=>FILTERS[i][0]==='f'), wg=[...active].some(i=>FILTERS[i][0]==='g');
   const wp=[...active].some(i=>FILTERS[i][0]==='p');
+  const srcs=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='src').map(f=>f[1]);
   let rows=DATA.filter(d=>{
     if(tracks.length&&!tracks.includes(d.track)) return false;
     if(wf&&d.f!==1) return false;
     if(wg&&d.g!==1) return false;
     if(wp&&!picked(d.id)) return false;
+    if(srcs.length && srcs.indexOf(SRCFULL[d.src||'joe']||d.src)===-1) return false;
     if(q&&!(d.inst+' '+d.title+' '+d.unit+' '+d.kw+' '+d.jel+' '+d.loc).toLowerCase().includes(q)) return false;
     return true;
   });
@@ -1029,7 +1087,10 @@ function renderTable(){
       <td class="mono ${dcls(d.days)}">${esc(d.dl||'—')}<br><span style="font-size:11px">${d.days==null?'—':d.days+'d'}</span></td>
       ${SHARED?`<td><span class="fit" data-n="${fitDots(d.fit)}" title="${esc(fitTitle(d))}"
         aria-label="Fit: ${fitDots(d.fit)} of 3"><i></i><i></i><i></i></span></td>`:''}
-      <td><span class="ti">${esc(d.inst)}</span>${d.unit?`<br><span class="in">${esc(d.unit)}</span>`:''}</td>
+      <td><span class="ti">${esc(d.inst)}</span>${SOURCES.length>1?`<span class="srcb"
+          data-s="${esc(d.src||'joe')}" title="${esc(SRCFULL[d.src||'joe']||'')}">${
+          esc(SRCNAME[d.src||'joe']||d.src||'')}</span>`:''}${
+          d.unit?`<br><span class="in">${esc(d.unit)}</span>`:''}</td>
       <td>${esc(d.title)}${d.screen==='Check'?'<br><span class="flag">check field / rank</span>':''}</td>
       <td><span class="pill ${TRACK[d.track]||'p-pv'}">${esc(d.track)}</span></td>
       <td><span class="tier ${d.f===1?'t1':''}">${d.f}</span></td>
@@ -1039,7 +1100,9 @@ function renderTable(){
              title="Open on JOE" aria-label="Open ${esc(d.title)} on JOE">&#8599;</a></td>
     </tr>
     <tr class="det" hidden data-d="${i}"><td colspan="${NCOL}"><div class="detin">
-      <div><div class="dl">JEL codes</div><div class="dv mono">${esc(d.jel||'—')}</div></div>
+      <div><div class="dl">${d.nat&&d.nat.length?'Fields, as '+esc(SRCFULL[d.src]||'the board')+' lists them':'JEL codes'}</div>
+        <div class="dv ${d.nat&&d.nat.length?'':'mono'}">${
+          d.nat&&d.nat.length ? esc(d.nat.join(' · ')) : esc(d.jel||'—')}</div></div>
       <div><div class="dl">Materials named in ad</div><div class="dv">${esc(d.mats||'not detected — read the ad')}</div></div>
       <div><div class="dl">Keywords</div><div class="dv">${esc(d.kw||'—')}</div></div>
       <div><div class="dl">Salary</div><div class="dv">${esc(d.sal||'not stated')}</div></div>
@@ -1093,6 +1156,7 @@ function restoreUI(){
 /* Order matters: the shared page must have its stored stars and preferences in hand
    BEFORE the first render, or it paints an empty tracker and then jumps. */
 renderDigest();
+renderSourceState();
 if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); }
 else { const th=document.getElementById('th-fit'); if(th) th.remove(); }
 applyScores();

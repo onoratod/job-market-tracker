@@ -11,6 +11,10 @@ pipeline/joe_full.xml
 pipeline/joe_listings_p*.html
 pipeline/cookies.txt
 pipeline/rows.json
+pipeline/joe_rows.json
+pipeline/ejm_rows.json
+pipeline/ejm_p*.html
+pipeline/digest.json
 pipeline/flags.json
 pipeline/posted.json
 pipeline/joe_snapshot.json
