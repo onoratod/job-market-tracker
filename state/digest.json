@@ -1,20 +1,88 @@
 {
  "date": "2026-09-14",
  "first_run": false,
- "first_pull": {
-  "ejm": 97
- },
+ "first_pull": {},
  "unavailable": [],
  "counts": {
-  "total": 312,
-  "new": 0,
+  "total": 315,
+  "new": 4,
   "changed": 0,
-  "withdrawn": 0,
+  "withdrawn": 1,
   "closing_soon": 20
  },
- "new": [],
+ "new": [
+  {
+   "id": "joe:111477816",
+   "inst": "Bank of Finland",
+   "title": "Visiting Scholars Programme",
+   "unit": "Monetary Policy and Research Department",
+   "track": "Policy/Gov",
+   "dl": "2026-10-04",
+   "days": 20,
+   "posted": "2026-09-14",
+   "f": 3,
+   "g": 3,
+   "ok": true,
+   "src": "joe",
+   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111477816"
+  },
+  {
+   "id": "joe:111477857",
+   "inst": "Southern Methodist University",
+   "title": "Assistant Teaching Professor",
+   "unit": "Economics Department",
+   "track": "Academic TT",
+   "dl": "2026-11-01",
+   "days": 48,
+   "posted": "2026-09-14",
+   "f": 1,
+   "g": 2,
+   "ok": true,
+   "src": "joe",
+   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111477857"
+  },
+  {
+   "id": "joe:111477830",
+   "inst": "Southern Methodist University",
+   "title": "Assistant Professor - Tenure Track",
+   "unit": "Economics Department",
+   "track": "Academic TT",
+   "dl": "2026-11-15",
+   "days": 62,
+   "posted": "2026-09-14",
+   "f": 1,
+   "g": 2,
+   "ok": true,
+   "src": "joe",
+   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111477830"
+  },
+  {
+   "id": "joe:111477863",
+   "inst": "BRG",
+   "title": "Managing Economist",
+   "unit": "",
+   "track": "Private sector",
+   "dl": "2027-01-31",
+   "days": 139,
+   "posted": "2026-09-14",
+   "f": 3,
+   "g": 1,
+   "ok": true,
+   "src": "joe",
+   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111477863"
+  }
+ ],
  "changed": [],
- "withdrawn": [],
+ "withdrawn": [
+  {
+   "id": "ejm:12513",
+   "inst": "Institut Polytechnique de Paris",
+   "title": "Post-doctoral position in Experimental Economics",
+   "dl": "2026-11-01",
+   "src": "ejm",
+   "url": "https://econjobmarket.org/positions/12513"
+  }
+ ],
  "closing_soon": [
   {
    "id": "joe:111477568",

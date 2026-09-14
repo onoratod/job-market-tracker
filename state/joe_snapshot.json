@@ -3,11 +3,11 @@
  "pulled": "2026-09-14",
  "sources": {
   "ejm": {
-   "count": 97,
+   "count": 96,
    "last_seen": "2026-09-14"
   },
   "joe": {
-   "count": 215,
+   "count": 219,
    "last_seen": "2026-09-14"
   }
  },
@@ -576,6 +576,16 @@
    "title": "Assistant or Associate Professor in Economics (Open Rank)",
    "inst": "Universidad del CEMA (UCEMA)"
   },
+  "joe:111477857": {
+   "fingerprint": "1e03cd1a887a9a19",
+   "src": "joe",
+   "first_seen": "2026-09-14",
+   "last_seen": "2026-09-14",
+   "deadline": "2026-11-01",
+   "posted": "2026-09-14",
+   "title": "Assistant Teaching Professor",
+   "inst": "Southern Methodist University"
+  },
   "joe:111477729": {
    "fingerprint": "d0324cd333607a75",
    "src": "joe",
@@ -595,6 +605,16 @@
    "posted": "2026-08-13",
    "title": "Assistant Professor in Economics",
    "inst": "Northwestern University"
+  },
+  "joe:111477830": {
+   "fingerprint": "85a5ea5c1b1a182c",
+   "src": "joe",
+   "first_seen": "2026-09-14",
+   "last_seen": "2026-09-14",
+   "deadline": "2026-11-15",
+   "posted": "2026-09-14",
+   "title": "Assistant Professor - Tenure Track",
+   "inst": "Southern Methodist University"
   },
   "joe:111477580": {
    "fingerprint": "390811d1fd4ee948",
@@ -2496,6 +2516,16 @@
    "title": "Research Fellow (Early Career)",
    "inst": "Resources for the Future"
   },
+  "joe:111477863": {
+   "fingerprint": "c0b3b5f3f97c038b",
+   "src": "joe",
+   "first_seen": "2026-09-14",
+   "last_seen": "2026-09-14",
+   "deadline": "2027-01-31",
+   "posted": "2026-09-14",
+   "title": "Managing Economist",
+   "inst": "BRG"
+  },
   "joe:111477661": {
    "fingerprint": "70e20b99960106e6",
    "src": "joe",
@@ -3050,20 +3080,6 @@
    "city": "Bonn",
    "start": ""
   },
-  "ejm:12513": {
-   "fingerprint": "cf60c1a0d806080d",
-   "src": "ejm",
-   "first_seen": "2026-09-14",
-   "last_seen": "2026-09-14",
-   "deadline": "2026-11-01",
-   "posted": "2026-06-05",
-   "title": "Post-doctoral position in Experimental Economics",
-   "inst": "Institut Polytechnique de Paris",
-   "cc": "FRANCE",
-   "st": "",
-   "city": "Palaiseau",
-   "start": ""
-  },
   "ejm:12514": {
    "fingerprint": "8eb1f9d3a90524a0",
    "src": "ejm",
@@ -3087,6 +3103,16 @@
    "posted": "2026-09-08",
    "title": "Janeway Institute Postdoctoral Research Fellowship",
    "inst": "University of Cambridge"
+  },
+  "joe:111477816": {
+   "fingerprint": "adea6cf7a114173a",
+   "src": "joe",
+   "first_seen": "2026-09-14",
+   "last_seen": "2026-09-14",
+   "deadline": "2026-10-04",
+   "posted": "2026-09-14",
+   "title": "Visiting Scholars Programme",
+   "inst": "Bank of Finland"
   },
   "ejm:12631": {
    "fingerprint": "13df371f5eea655b",
