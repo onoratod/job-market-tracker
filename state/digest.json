@@ -6,79 +6,12 @@
  "counts": {
   "total": 380,
   "new": 0,
-  "changed": 3,
+  "changed": 0,
   "withdrawn": 0,
   "closing_soon": 42
  },
  "new": [],
- "changed": [
-  {
-   "id": "ejm:12684",
-   "inst": "Federal Reserve Bank of St. Louis",
-   "title": "Community Development Research Fellow",
-   "unit": "Community Development",
-   "track": "Policy/Gov",
-   "dl": "2026-10-09",
-   "days": 20,
-   "posted": "2026-09-19",
-   "f": 1,
-   "g": 4,
-   "flag": "",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12684",
-   "moved": [
-    {
-     "field": "details",
-     "from": "",
-     "to": ""
-    }
-   ]
-  },
-  {
-   "id": "ejm:12558",
-   "inst": "Heidelberg University",
-   "title": "Postdoctoral position - Causal inference in electronic health record data",
-   "unit": "Heidelberg Institute of Global Health",
-   "track": "Postdoc/Visiting",
-   "dl": "2027-02-03",
-   "days": 137,
-   "posted": "2026-08-03",
-   "f": 1,
-   "g": 4,
-   "flag": "check",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12558",
-   "moved": [
-    {
-     "field": "details",
-     "from": "",
-     "to": ""
-    }
-   ]
-  },
-  {
-   "id": "ejm:12559",
-   "inst": "Stanford University",
-   "title": "Postdoctoral position - Causal inference in electronic health record data",
-   "unit": "Medical School",
-   "track": "Postdoc/Visiting",
-   "dl": "2027-02-03",
-   "days": 137,
-   "posted": "2026-08-03",
-   "f": 1,
-   "g": 4,
-   "flag": "check",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12559",
-   "moved": [
-    {
-     "field": "details",
-     "from": "",
-     "to": ""
-    }
-   ]
-  }
- ],
+ "changed": [],
  "withdrawn": [],
  "closing_soon": [
   {
