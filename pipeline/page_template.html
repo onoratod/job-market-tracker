@@ -884,7 +884,7 @@ function regionBlock(rkey, rname, states, covered){
     `<label class="opt sm"${(covered||has('s:'+x.st))?' data-on=""':''}>
        <input type="checkbox" data-tok="s:${esc(x.st)}"${(covered||has('s:'+x.st))?' checked':''}
          ${covered?' disabled':''}><span>${esc(x.st)}</span>${countTag(x.n)}</label>`).join('');
-  return `<details class="reg"><summary>
+  return `<details class="reg" data-k="r:${esc(rkey)}"><summary>
       <label class="opt"${(covered||on)?' data-on=""':(some?' data-some=""':'')} onclick="event.stopPropagation()">
         <input type="checkbox" data-region="${esc(rkey)}"${(covered||on)?' checked':''}
           ${covered?' disabled':''}><span>${esc(rname)}</span></label>
@@ -911,7 +911,7 @@ function continentBlock(c){
      should have to make. */
   const opened = whole || c.key==='na'
       || c.countries.some(k=>has('k:'+k.cc) || (k.regions||[]).some(r=>r.states.some(x=>has('s:'+x.st))));
-  return `<details class="cont"${opened?' open':''}>
+  return `<details class="cont" data-k="c:${esc(c.key)}"${opened?' open':''}>
     <summary>
       <span class="contname">${esc(c.name)}</span>${countTag(c.n)}
       <label class="opt sm allof"${whole?' data-on=""':''} onclick="event.stopPropagation()">
@@ -940,26 +940,51 @@ function placesGroup(){
   </div>`;
 }
 
+/* Which <details> the viewer had open. The panel is re-rendered from scratch whenever a
+   place changes — ticking a continent has to grey out its countries, ticking a state has
+   to move its region to half-filled — and a rebuilt <details> forgets it was open. Without
+   this, ticking one state slammed shut the list of states you were ticking. */
+function openKeys(){
+  const out=new Set();
+  document.querySelectorAll('#prefsin details[data-k]').forEach(d=>{ if(d.open) out.add(d.dataset.k); });
+  return out;
+}
+function restoreOpen(keys){
+  document.querySelectorAll('#prefsin details[data-k]').forEach(d=>{
+    if(keys.has(d.dataset.k)) d.open=true;
+  });
+}
+
 function renderPrefs(){
   if(!SHARED) return;
+  const wasOpen = openKeys();
   document.getElementById('prefsin').innerHTML =
     optGroup('My fields','Listings carrying one of these JEL codes rank first. Open searches — JEL 00, how most top departments advertise — sit in the middle unless you tick them.',FIELDS,PREFS.fields,'fields')
     + placesGroup()
     + optGroup('What I am looking for','The kind of position. Leave empty if you are open to all of them.',TRACKS,PREFS.tracks,'tracks')
     + `<div class="prefsfoot"><button class="btn" type="button" id="prefsclear">Clear all</button>
        <span>Stored in this browser. Nothing here is sent anywhere or visible to anyone else.</span></div>`;
-  document.querySelectorAll('[data-pref]').forEach(cb=>cb.addEventListener('change',()=>{
-    const k=cb.dataset.pref, v=cb.value, at=PREFS[k].indexOf(v);
-    if(cb.checked){ if(at===-1) PREFS[k].push(v); } else if(at!==-1){ PREFS[k].splice(at,1); }
-    const lab=cb.closest('.opt');
-    if(lab){ if(cb.checked) lab.setAttribute('data-on',''); else lab.removeAttribute('data-on'); }
-    afterPrefs();
-  }));
-  /* Re-render after a place changes: ticking a continent has to grey out its countries,
-     and ticking a state has to move its region to half-filled. */
-  const prefsin=document.getElementById('prefsin');
+  if(wasOpen.size) restoreOpen(wasOpen);
+  updatePrefSummary();
+}
+
+/* Wired ONCE, on the container, never inside renderPrefs.
+   This used to be attached on every render, and renderPrefs re-runs on every change, so
+   each click left another listener behind: one click re-rendered once, the next twice,
+   the next four times. Measured 42ms on the first tick and 914ms on the sixth, doubling
+   all the way. Delegation to a container that is never itself replaced is the fix. */
+function wirePrefs(){
+  const prefsin=document.getElementById('prefsin'); if(!prefsin) return;
   prefsin.addEventListener('change',e=>{
     const cb=e.target.closest('input[type=checkbox]'); if(!cb) return;
+    if(cb.dataset.pref){
+      const k=cb.dataset.pref, v=cb.value, at=PREFS[k].indexOf(v);
+      if(cb.checked){ if(at===-1) PREFS[k].push(v); } else if(at!==-1){ PREFS[k].splice(at,1); }
+      const lab=cb.closest('.opt');
+      if(lab){ if(cb.checked) lab.setAttribute('data-on',''); else lab.removeAttribute('data-on'); }
+      afterPrefs();                       /* a field or track needs no structural redraw */
+      return;
+    }
     if(cb.dataset.tok) setTok(cb.dataset.tok, cb.checked);
     else if(cb.dataset.cont) setTok('c:'+cb.dataset.cont, cb.checked);
     else if(cb.dataset.region){
@@ -969,13 +994,9 @@ function renderPrefs(){
     renderPrefs(); afterPrefs();
   });
   prefsin.addEventListener('click',e=>{
-    const x=e.target.closest('.orphx'); if(!x) return;
-    setTok(x.dataset.tok, false); renderPrefs(); afterPrefs();
+    const x=e.target.closest('.orphx'); if(x){ setTok(x.dataset.tok, false); renderPrefs(); afterPrefs(); return; }
+    if(e.target.closest('#prefsclear')){ PREFS=normPrefs(null); renderPrefs(); afterPrefs(); }
   });
-  document.getElementById('prefsclear').addEventListener('click',()=>{
-    PREFS=normPrefs(null); renderPrefs(); afterPrefs();
-  });
-  updatePrefSummary();
 }
 function updatePrefSummary(){
   const el=document.getElementById('prefsum'); if(!el) return;
@@ -995,8 +1016,14 @@ function updatePrefSummary(){
   if(PREFS.tracks.length)  parts.push(PREFS.tracks.join(', '));
   el.textContent = parts.join('  ·  ');
 }
+/* Setting preferences means ticking a dozen boxes in a row, and every tick used to
+   rebuild six hundred table rows sitting on a tab you cannot see. Score now, draw when
+   the table is actually on screen. */
+let tableDirty=false;
 function afterPrefs(){
-  applyScores(); updatePrefSummary(); saveLocal(); maybeSortByFit(); renderTable();
+  applyScores(); updatePrefSummary(); saveLocal(); maybeSortByFit();
+  const listingsVisible = !document.getElementById('v-all').hidden;
+  if(listingsVisible) renderTable(); else tableDirty=true;
   if(typeof renderNudge==='function') renderNudge();
 }
 /* Setting a preference should visibly do something. Switch the table to fit order the
@@ -1411,7 +1438,10 @@ function renderAll(){ renderApps(); renderShort(); renderTable(); }
 const TABS=[['t-app','v-app'],['t-short','v-short'],['t-all','v-all'],
             ['t-prefs','v-prefs'],['t-backup','v-backup']];
 function showTab(t){
-  setTimeout(()=>{ if(typeof renderNudge==='function') renderNudge(); }, 0);
+  setTimeout(()=>{
+    if(typeof renderNudge==='function') renderNudge();
+    if(tableDirty && !document.getElementById('v-all').hidden){ tableDirty=false; renderTable(); }
+  }, 0);
   TABS.forEach(([t2,v2])=>{
     const tab=document.getElementById(t2), view=document.getElementById(v2);
     if(!tab||!view) return;
@@ -1476,7 +1506,8 @@ if(toTop){
   sync();
 }
 
-if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); renderNudge(); }
+if(SHARED){ bootLocal(); wirePrefs(); renderPrefs(); wireBackup(); refreshBackup();
+            maybeSortByFit(); renderNudge(); }
 else { const th=document.getElementById('th-fit'); if(th) th.remove(); }
 applyScores();
 setFooter();
