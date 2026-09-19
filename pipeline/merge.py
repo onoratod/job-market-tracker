@@ -12,6 +12,7 @@ import json, re, html, hashlib, datetime, os, collections
 import xml.etree.ElementTree as ET
 from screens import track_rank
 from snapshot import load_prior, sources_in
+from metro import metro_of
 
 def clean(v):
     v = html.unescape(html.unescape(v or ''))
@@ -75,11 +76,22 @@ for r in rows:
             r['url'] = f"https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_{r['id']}"
         r['id'] = f"{r['src']}:{r['id']}"
     was = prior.get(r['id']) or {}
-    r['eligible'] = r['discipline'] != 'Non-econ' and r['rank_fit'] != 'Senior only'
-    r['exclude_why'] = ('Not economics or econ-adjacent' if r['discipline'] == 'Non-econ'
-                        else 'Rank above assistant level' if r['rank_fit'] == 'Senior only' else '')
+    # The screens no longer remove anything. A listing the screen dislikes is flagged and
+    # sorted lower, but stays in the table — the screen is wrong sometimes, and a listing
+    # nobody can see is a listing nobody can correct.
+    r['flag'] = ('not-econ' if r['discipline'] == 'Non-econ'
+                 else 'senior' if r['rank_fit'] == 'Senior only'
+                 else 'check' if (r['discipline'] == 'Check' or r['rank_fit'] == 'Check rank')
+                 else '')
+    r['flag_why'] = {
+        'not-econ': 'Department and title do not read as economics or econ-adjacent',
+        'senior': 'Advertised above assistant level',
+        'check': 'Field or rank is ambiguous here — worth reading the ad'}.get(r['flag'], '')
     r['srank'] = track_rank(r['section'])
-    r['score'] = r['jtier'] * 100 + r['gtier'] * 10 + r['srank'] + (0 if r['eligible'] else 1000)
+    r['score'] = (r['jtier'] * 100 + r['gtier'] * 10 + r['srank']
+                  + (1000 if r['flag'] in ('not-econ', 'senior') else 0))
+    r['city'] = r.get('city') or ''
+    r['metro'] = metro_of(r['loc'], r.get('country', ''), r['city'])
     # Posting date: this run's parse first, then the date already carried in the snapshot.
     # Never first_seen — that is when WE saw it, not when the board posted it.
     r['posted'] = r.get('posted_raw') or was.get('posted') or ''
@@ -124,12 +136,14 @@ for src in sources_in(prior):
 json.dump({'cycle': '2026-02', 'pulled': TODAY, 'sources': sources, 'listings': snap},
           open('joe_snapshot.json', 'w'), indent=1)
 
-el = [r for r in rows if r['eligible']]
 by_src = collections.Counter(r['src'] for r in rows)
-print(f"merged {len(rows)} listings {dict(by_src)} | eligible {len(el)} | excluded {len(rows)-len(el)}")
-print('excluded reasons:', dict(collections.Counter(r['exclude_why'] for r in rows if not r['eligible'])))
-print('eligible + field tier 1:', sum(1 for r in el if r['jtier'] == 1))
-print('eligible + tier1 field + geo 1-2:', sum(1 for r in el if r['jtier'] == 1 and r['gtier'] <= 2))
+flags = collections.Counter(r['flag'] for r in rows if r['flag'])
+print(f"merged {len(rows)} listings {dict(by_src)} | flagged {dict(flags)} (none removed)")
+print('field tier 1:', sum(1 for r in rows if r['jtier'] == 1))
+print('tier1 field + geo 1-2:', sum(1 for r in rows if r['jtier'] == 1 and r['gtier'] <= 2))
+no_city = sum(1 for r in rows if not r['city'] and ',' not in (r['loc'] or ''))
+print(f"in a major metro: {sum(1 for r in rows if r['metro'])} "
+      f"| {no_city} listing(s) name no city, so metro is unknown for them")
 print('\nTop 12 by priority:')
 for r in rows[:12]:
     print(f"  {r['score']:>4} {r['src']:<4} {r['section'][:16]:<16} {r['deadline'][:10]:<10} "

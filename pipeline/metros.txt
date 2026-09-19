@@ -1,0 +1,150 @@
+# Major metropolitan areas, for the "Major metro" filter on the listings page.
+#
+# THIS IS A JUDGEMENT LIST, NOT A FACT. It exists because somebody who wants to live
+# in or near a big city should be able to find those jobs in one click — not because
+# there is an official answer about what counts as major. Edit it freely.
+#
+# A listing is flagged "major metro" when its city appears on the right-hand side of
+# a line whose country matches. That is why the suburbs and college towns inside a
+# metro are listed explicitly: Cambridge is Boston, Evanston is Chicago, Palo Alto is
+# the Bay Area. A university in a town that is genuinely its own place — Ithaca, Ann
+# Arbor, Madison, Champaign, State College — is deliberately NOT here. That is the
+# whole point of the filter.
+#
+# Format:   COUNTRY | Metro name | city; city; city
+# Matching is case-insensitive and ignores punctuation. Lines starting with # are
+# comments. A city listed under two metros is fine; the first match wins.
+
+# ---------------------------------------------------------------- United States
+UNITED STATES | New York | New York; New York City; Brooklyn; Queens; Bronx; Staten Island; Yonkers; White Plains; Purchase; Bronxville; Hempstead; Garden City; Stony Brook; Newark; Jersey City; Hoboken; Montclair; Teaneck; Madison NJ; South Orange; New Brunswick; Piscataway; Rutherford; Mahwah
+UNITED STATES | Los Angeles | Los Angeles; Pasadena; Long Beach; Santa Monica; Malibu; Claremont; Pomona; Northridge; Fullerton; Irvine; Anaheim; Costa Mesa; Whittier; Carson; Thousand Oaks; Burbank; Glendale; Torrance; Orange; Santa Ana
+UNITED STATES | Chicago | Chicago; Evanston; Naperville; Oak Park; Skokie; Wilmette; Des Plaines; Lake Forest; Elmhurst; Hyde Park; Aurora; Schaumburg
+UNITED STATES | San Francisco Bay Area | San Francisco; Berkeley; Oakland; Palo Alto; Stanford; San Jose; Santa Clara; Mountain View; Menlo Park; Sunnyvale; Fremont; Hayward; San Mateo; Moraga; Orinda; Walnut Creek; Santa Cruz; Cupertino; Redwood City
+UNITED STATES | Washington DC | Washington; Washington DC; Washington D.C.; Arlington; Alexandria; Fairfax; College Park; Bethesda; Silver Spring; Rockville; Georgetown; Annandale; McLean; Reston; Falls Church; Suitland; Hyattsville
+UNITED STATES | Boston | Boston; Cambridge; Somerville; Medford; Malden; Waltham; Watertown; Newton; Chestnut Hill; Brookline; Wellesley; Needham; Quincy; Dedham; Babson Park; North Andover; Lowell; Beverly; Salem MA
+UNITED STATES | Philadelphia | Philadelphia; Villanova; Bryn Mawr; Haverford; Swarthmore; Chester; Camden; Cherry Hill; Wayne PA; Radnor; Glassboro; Bethlehem; Easton PA; Newark DE
+UNITED STATES | Dallas | Dallas; Fort Worth; Arlington TX; Plano; Irving; Richardson; Denton; Garland; Frisco; University Park
+UNITED STATES | Houston | Houston; Sugar Land; Pasadena TX; The Woodlands; Katy
+UNITED STATES | Miami | Miami; Coral Gables; Miami Gardens; Fort Lauderdale; Boca Raton; Davie; Hollywood FL; West Palm Beach; Miami Beach
+UNITED STATES | Atlanta | Atlanta; Decatur; Marietta; Kennesaw; Alpharetta; Sandy Springs; Roswell; Athens GA
+UNITED STATES | Phoenix | Phoenix; Tempe; Scottsdale; Mesa; Glendale AZ; Chandler; Gilbert
+UNITED STATES | Seattle | Seattle; Bellevue; Redmond; Tacoma; Bothell; Kirkland; Everett
+UNITED STATES | Minneapolis | Minneapolis; Saint Paul; St. Paul; Bloomington MN; Edina; Minnetonka
+UNITED STATES | Detroit | Detroit; Dearborn; Ann Arbor; Ypsilanti; Rochester MI; Southfield; Warren MI; Troy MI
+UNITED STATES | San Diego | San Diego; La Jolla; Chula Vista; Carlsbad; Oceanside; Escondido
+UNITED STATES | Denver | Denver; Boulder; Aurora CO; Lakewood; Golden; Littleton; Englewood
+UNITED STATES | Baltimore | Baltimore; Towson; Catonsville; Columbia MD; Annapolis
+UNITED STATES | Tampa | Tampa; St. Petersburg; Saint Petersburg; Clearwater; Lakeland; Sarasota
+UNITED STATES | Charlotte | Charlotte; Davidson; Concord NC; Gastonia
+UNITED STATES | Orlando | Orlando; Winter Park; Kissimmee; Sanford FL
+UNITED STATES | San Antonio | San Antonio; New Braunfels
+UNITED STATES | Portland | Portland OR; Beaverton; Hillsboro; Gresham; Vancouver WA
+UNITED STATES | Sacramento | Sacramento; Davis; Roseville; Elk Grove; Folsom
+UNITED STATES | Pittsburgh | Pittsburgh; Oakland PA; Bethel Park; Monroeville
+UNITED STATES | Austin | Austin; Round Rock; Georgetown TX; San Marcos
+UNITED STATES | Las Vegas | Las Vegas; Henderson; North Las Vegas; Paradise NV
+UNITED STATES | St. Louis | St. Louis; Saint Louis; Clayton; Edwardsville; Webster Groves
+UNITED STATES | Cincinnati | Cincinnati; Covington; Oxford OH; Highland Heights
+UNITED STATES | Kansas City | Kansas City; Overland Park; Lawrence KS; Olathe
+UNITED STATES | Columbus | Columbus OH; Dublin OH; Westerville; Worthington
+UNITED STATES | Cleveland | Cleveland; Akron; Kent OH; Cleveland Heights; Berea
+UNITED STATES | Indianapolis | Indianapolis; Carmel IN; Fishers; Greenwood IN
+UNITED STATES | Nashville | Nashville; Murfreesboro; Franklin TN; Brentwood TN
+UNITED STATES | Raleigh-Durham | Raleigh; Durham; Chapel Hill; Cary; Morrisville
+UNITED STATES | Providence | Providence; Pawtucket; Kingston RI; Bristol RI; Warwick
+UNITED STATES | Milwaukee | Milwaukee; Waukesha; Whitewater; Wauwatosa
+UNITED STATES | Salt Lake City | Salt Lake City; Provo; Ogden; Orem; Logan UT
+UNITED STATES | New Orleans | New Orleans; Metairie; Baton Rouge
+UNITED STATES | Richmond | Richmond VA; Glen Allen; Midlothian
+UNITED STATES | Hartford | Hartford; West Hartford; Storrs; New Britain; Middletown CT
+UNITED STATES | Buffalo | Buffalo; Amherst NY; Niagara Falls
+UNITED STATES | Louisville | Louisville; Jeffersonville; New Albany IN
+UNITED STATES | Memphis | Memphis; Germantown TN
+UNITED STATES | Oklahoma City | Oklahoma City; Norman; Edmond
+UNITED STATES | Jacksonville | Jacksonville; St. Augustine
+UNITED STATES | Virginia Beach | Virginia Beach; Norfolk; Newport News; Williamsburg; Hampton
+
+# ---------------------------------------------------------------- Canada
+CANADA | Toronto | Toronto; Mississauga; Scarborough; North York; Etobicoke; Markham; Oakville; Hamilton; Burlington ON; Waterloo; Kitchener
+CANADA | Montreal | Montreal; Montréal; Laval; Longueuil
+CANADA | Vancouver | Vancouver; Burnaby; Surrey; Richmond BC; Coquitlam; North Vancouver
+CANADA | Calgary | Calgary
+CANADA | Ottawa | Ottawa; Gatineau
+CANADA | Edmonton | Edmonton
+
+# ---------------------------------------------------------------- Europe
+UNITED KINGDOM | London | London; Egham; Uxbridge; Richmond upon Thames; Kingston upon Thames; Croydon
+UNITED KINGDOM | Manchester | Manchester; Salford
+UNITED KINGDOM | Birmingham | Birmingham; Coventry
+UNITED KINGDOM | Glasgow | Glasgow
+UNITED KINGDOM | Edinburgh | Edinburgh
+FRANCE | Paris | Paris; Nanterre; Cergy; Palaiseau; Saclay; Versailles; Créteil; Villetaneuse
+FRANCE | Lyon | Lyon; Villeurbanne
+FRANCE | Marseille | Marseille; Aix-en-Provence
+FRANCE | Toulouse | Toulouse
+GERMANY | Berlin | Berlin; Potsdam
+GERMANY | Munich | Munich; München
+GERMANY | Frankfurt | Frankfurt; Frankfurt am Main; Mainz; Wiesbaden; Darmstadt
+GERMANY | Hamburg | Hamburg
+GERMANY | Cologne-Düsseldorf | Cologne; Köln; Düsseldorf; Dusseldorf; Bonn; Essen; Duisburg; Dortmund; Bochum
+GERMANY | Stuttgart | Stuttgart; Mannheim; Heidelberg
+SPAIN | Madrid | Madrid; Getafe; Alcalá de Henares; Leganés
+SPAIN | Barcelona | Barcelona; Bellaterra; Cerdanyola del Vallès
+ITALY | Rome | Rome; Roma
+ITALY | Milan | Milan; Milano; Bergamo
+NETHERLANDS | Amsterdam | Amsterdam; Amstelveen; Haarlem
+NETHERLANDS | Rotterdam-The Hague | Rotterdam; The Hague; Den Haag; Delft; Leiden
+SWITZERLAND | Zurich | Zurich; Zürich; Winterthur
+SWITZERLAND | Geneva-Lausanne | Geneva; Genève; Lausanne
+BELGIUM | Brussels | Brussels; Bruxelles; Leuven; Louvain-la-Neuve
+SWEDEN | Stockholm | Stockholm; Solna
+DENMARK | Copenhagen | Copenhagen; København; Frederiksberg
+NORWAY | Oslo | Oslo
+FINLAND | Helsinki | Helsinki; Espoo; Vantaa
+AUSTRIA | Vienna | Vienna; Wien
+IRELAND | Dublin | Dublin; Maynooth
+PORTUGAL | Lisbon | Lisbon; Lisboa
+POLAND | Warsaw | Warsaw; Warszawa
+
+# ---------------------------------------------------------------- Asia-Pacific
+CHINA | Beijing | Beijing; Peking
+CHINA | Shanghai | Shanghai; Kunshan; Suzhou
+CHINA | Shenzhen-Guangzhou | Shenzhen; Guangzhou; Dongguan
+CHINA | Chengdu | Chengdu
+CHINA | Wuhan | Wuhan
+CHINA | Hangzhou | Hangzhou; Ningbo
+CHINA | Xi'an | Xi'an; Xian
+CHINA | Tianjin | Tianjin
+HONG KONG | Hong Kong | Hong Kong; Kowloon; Sha Tin; Clear Water Bay; Hung Hom
+SINGAPORE | Singapore | Singapore
+JAPAN | Tokyo | Tokyo; Yokohama; Kawasaki; Chiba; Saitama; Kunitachi; Hachioji
+JAPAN | Osaka-Kyoto | Osaka; Kyoto; Kobe; Suita; Nishinomiya
+KOREA, REPUBLIC OF | Seoul | Seoul; Incheon; Suwon; Seongnam
+SOUTH KOREA | Seoul | Seoul; Incheon; Suwon; Seongnam
+TAIWAN | Taipei | Taipei; New Taipei; Taoyuan; Hsinchu
+INDIA | Delhi | New Delhi; Delhi; Gurgaon; Gurugram; Noida
+INDIA | Mumbai | Mumbai; Navi Mumbai
+INDIA | Bangalore | Bangalore; Bengaluru
+AUSTRALIA | Sydney | Sydney; Parramatta; Kensington NSW; North Ryde
+AUSTRALIA | Melbourne | Melbourne; Clayton VIC; Caulfield East; Parkville; Bundoora
+AUSTRALIA | Brisbane | Brisbane; St Lucia; Nathan QLD
+AUSTRALIA | Perth | Perth; Crawley WA
+NEW ZEALAND | Auckland | Auckland
+ISRAEL | Tel Aviv | Tel Aviv; Ramat Gan; Herzliya; Ramat Aviv
+ISRAEL | Jerusalem | Jerusalem
+
+# ---------------------------------------------------------------- Americas, rest
+MEXICO | Mexico City | Mexico City; Ciudad de México; Mexico D.F.
+BRAZIL | São Paulo | São Paulo; Sao Paulo; Campinas
+BRAZIL | Rio de Janeiro | Rio de Janeiro
+CHILE | Santiago | Santiago
+ARGENTINA | Buenos Aires | Buenos Aires
+COLOMBIA | Bogotá | Bogotá; Bogota
+
+# ---------------------------------------------------------------- Africa, Middle East
+SOUTH AFRICA | Johannesburg | Johannesburg; Pretoria
+SOUTH AFRICA | Cape Town | Cape Town; Stellenbosch
+EGYPT | Cairo | Cairo; Giza
+UNITED ARAB EMIRATES | Dubai-Abu Dhabi | Dubai; Abu Dhabi; Sharjah
+SAUDI ARABIA | Riyadh | Riyadh; Misk City
+TURKEY | Istanbul | Istanbul

@@ -113,7 +113,13 @@ tr.row{cursor:pointer} tr.row:hover td{background:var(--surface-2)}
 .tier{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:4px;
   font-size:11px;font-family:"IBM Plex Mono",monospace;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
 .tier.t1{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
-.flag{font-size:11px;color:var(--warn);font-family:"IBM Plex Mono",monospace}
+/* The screens flag instead of removing, so the badge has to be readable but never
+   shouty — a wrong flag should look arguable, not authoritative. */
+.flag{display:inline-block;font-size:10.5px;letter-spacing:.04em;padding:1px 6px;border-radius:3px;
+  font-family:"IBM Plex Mono",monospace;background:var(--surface-2);color:var(--muted);
+  border:1px solid var(--line)}
+.flag[data-f="senior"]{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.flag[data-f="not-econ"]{background:var(--urgent-soft);color:var(--urgent);border-color:transparent}
 .srcb{display:inline-block;font-size:9.5px;letter-spacing:.06em;padding:1px 5px;border-radius:3px;
   border:1px solid var(--line);color:var(--muted);font-family:"IBM Plex Mono",monospace;
   vertical-align:1px}
@@ -238,11 +244,68 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 .opt:has(input:checked),.opt[data-on]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .opt:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
 .prefsfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.opt[data-some]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.opt.sm{padding:3px 9px;font-size:12px}
+.opt input:disabled{cursor:default}
+.opt:has(input:disabled){opacity:.62;cursor:default}
+
+/* --- where I would go ------------------------------------------------------- */
+.conts{display:flex;flex-direction:column;gap:7px}
+details.cont{border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+details.cont>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;
+  padding:9px 13px}
+details.cont>summary::-webkit-details-marker{display:none}
+details.cont>summary::after{content:"\25B8";margin-left:auto;color:var(--muted);font-size:12px}
+details.cont[open]>summary::after{content:"\25BE"}
+.contname{font-family:"Source Serif 4",Georgia,serif;font-size:14.5px;font-weight:600}
+.contin{padding:2px 13px 12px;display:flex;flex-direction:column;gap:9px;
+  border-top:1px solid var(--line)}
+.ctry{padding-top:8px}
+.ctryhead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.regs{display:flex;flex-direction:column;gap:5px;margin:8px 0 0 16px;
+  border-left:2px solid var(--line);padding-left:12px}
+details.reg>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+details.reg>summary::-webkit-details-marker{display:none}
+.regmore{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.opts.sub{margin:7px 0 4px 16px}
+.ct{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted)}
+.ct[data-zero]{opacity:.42}
+.orphans{font-size:12.5px;color:var(--muted);margin:11px 0 0}
+.orph{display:inline-flex;align-items:center;gap:5px;padding:2px 5px 2px 9px;margin:0 3px;
+  border:1px dashed var(--line);border-radius:20px}
+.orphx{border:0;background:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;
+  padding:0 3px}
+.orphx:hover{color:var(--urgent)}
+
+/* --- the ask on the landing tab --------------------------------------------- */
+.nudge{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:24px 0 -4px;
+  background:var(--accent-soft);border-radius:9px;padding:14px 17px;font-size:13.5px;
+  color:var(--accent-ink);max-width:none}
+.nudge>div{flex:1 1 320px;max-width:72ch}
+.nudge .btn{flex:0 0 auto}
+
+/* --- back to top ------------------------------------------------------------ */
+.totop{position:fixed;right:22px;bottom:22px;z-index:30;width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;
+  box-shadow:var(--shadow);font-size:17px;line-height:1}
+.totop:hover{color:var(--accent-ink);border-color:var(--accent)}
+.totop:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.panel.pad{padding:17px}
+#prefsin{display:flex;flex-direction:column;gap:26px;margin-top:20px}
+#v-prefs .lede{margin-bottom:0}
+.allof{margin-left:auto}
+details.cont>summary::after{content:none}
+.caret{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  margin-left:auto;white-space:nowrap}
+.caret::after{content:" \25B8"}
+details.reg[open] .caret::after{content:" \25BE"}
+details.cont>summary .ct{margin-right:4px}
 .fit{display:inline-flex;gap:2px;align-items:center}
 .fit i{width:5px;height:5px;border-radius:50%;background:var(--line);display:block}
 .fit[data-n="3"] i:nth-child(-n+3),.fit[data-n="2"] i:nth-child(-n+2),.fit[data-n="1"] i:nth-child(1){
   background:var(--accent)}
-.backup textarea{width:100%;min-height:90px;padding:9px 11px;border:1px solid var(--line);
+#v-backup textarea{width:100%;min-height:90px;padding:9px 11px;border:1px solid var(--line);
   border-radius:6px;background:var(--surface-2);color:var(--ink);
   font-family:"IBM Plex Mono",monospace;font-size:11.5px;resize:vertical}
 .btn{font:inherit;font-size:13px;padding:7px 13px;border-radius:6px;border:1px solid var(--line);
@@ -283,12 +346,24 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
     <button class="tab" role="tab" id="t-app" aria-selected="true" aria-controls="v-app">Applications</button>
     <button class="tab" role="tab" id="t-short" aria-selected="false" aria-controls="v-short">Shortlist</button>
     <button class="tab" role="tab" id="t-all" aria-selected="false" aria-controls="v-all">All listings</button>
-    <button class="tab" role="tab" id="t-out" aria-selected="false" aria-controls="v-out">Screened out</button>
+    <button class="tab" role="tab" id="t-prefs" aria-selected="false" aria-controls="v-prefs">Preferences</button>
+    <button class="tab" role="tab" id="t-backup" aria-selected="false" aria-controls="v-backup">Backup</button>
     <span class="status" id="status" data-s="idle"></span>
   </div>
 </header>
 
 <div class="wrap">
+
+<!-- Above the panels, not inside one: a first-time viewer lands on All listings,
+     a returning one on Applications, and the ask has to reach both. -->
+<div class="nudge" id="prefnudge" hidden>
+  <div>
+    <strong>This list is ranked for nobody in particular.</strong>
+    Tell it which fields you work in and where you would actually go, and the ordering
+    becomes yours. It takes a minute, it stays in this browser, and nobody else sees it.
+  </div>
+  <button class="btn primary" type="button" id="gotoprefs">Set my preferences</button>
+</div>
 
 <div id="v-app" role="tabpanel" aria-labelledby="t-app">
   <section>
@@ -314,13 +389,6 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
       <span class="sumline" id="wnsum"></span>
     </summary>
     <div class="boxin" id="wnin"></div>
-  </details>
-  <details class="box" id="prefs" hidden>
-    <summary>
-      <span class="sumtitle">My preferences</span>
-      <span class="sumline" id="prefsum">not set &mdash; sorting is the same for everyone</span>
-    </summary>
-    <div class="boxin" id="prefsin"></div>
   </details>
   <section>
     <div class="shead"><h2>Closing soon</h2><span class="note">next 7 days</span></div>
@@ -356,23 +424,20 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
   </section>
 </div>
 
-<div id="v-out" role="tabpanel" aria-labelledby="t-out" hidden>
+<div id="v-prefs" role="tabpanel" aria-labelledby="t-prefs" hidden>
   <section>
-    <div class="shead"><h2>Screened out</h2><span class="note">__NOUT__ listings</span></div>
-    <div class="panel">
-      <p class="lede" id="outlede">Set aside by the field or rank screen &mdash; not economics, or a rank above assistant level.
-      Nothing is deleted. If one of these is wrong, say so and the rule gets fixed: a false exclusion is the expensive kind of error.</p>
-      <div id="outlist"></div>
-    </div>
+    <div class="shead"><h2>My preferences</h2><span class="note" id="prefsum">not set</span></div>
+    <p class="lede">Nothing here filters the list. Everything still shows &mdash; these choices
+    only decide what floats to the top, so a preference you set carelessly costs you position,
+    never a job. Stored in this browser; never sent anywhere.</p>
+    <div id="prefsin"></div>
   </section>
 </div>
 
-<details class="box backup" id="backup" hidden>
-  <summary>
-    <span class="sumtitle">Back up or restore</span>
-    <span class="sumline">your data lives in this browser only</span>
-  </summary>
-  <div class="boxin">
+<div id="v-backup" role="tabpanel" aria-labelledby="t-backup" hidden>
+  <section>
+    <div class="shead"><h2>Back up or restore</h2><span class="note">this browser only</span></div>
+  <div class="panel pad">
     <div class="optgroup">
       <p>Everything you star, track and set here is stored by this browser on this machine.
       Clearing site data, or opening the tracker on another computer, starts you from nothing.
@@ -393,21 +458,25 @@ details.box>summary:focus-visible{outline:2px solid var(--accent);outline-offset
       </div>
     </div>
   </div>
-</details>
+  </section>
+</div>
+
+<button class="totop" id="totop" type="button" hidden
+  aria-label="Back to top" title="Back to top">&#8593;</button>
 
 <footer id="foot"></footer>
 </div>
 
 <script id="joe-data" type="application/json">__DATA__</script>
-<script id="joe-out" type="application/json">__OUT__</script>
 <script id="joe-soon" type="application/json">__SOON__</script>
 <script id="joe-state" type="application/json">__STATE__</script>
 <script id="joe-digest" type="application/json">__DIGEST__</script>
 <script id="joe-sources" type="application/json">__SOURCES__</script>
+<script id="joe-places" type="application/json">__PLACES__</script>
+<script id="joe-metros" type="application/json">__METROS__</script>
 
 <script>
 const DATA = JSON.parse(document.getElementById('joe-data').textContent);
-const OUT  = JSON.parse(document.getElementById('joe-out').textContent);
 const SOON = JSON.parse(document.getElementById('joe-soon').textContent);
 const DIGEST = (()=>{ const el=document.getElementById('joe-digest');
   try{ return el ? JSON.parse(el.textContent) : {}; }catch(e){ return {}; } })();
@@ -419,6 +488,10 @@ const BY = Object.fromEntries(DATA.map(d=>[d.id,d]));
 const TRACK={'Academic TT':'p-tt','Postdoc/Visiting':'p-pd','Policy/Gov':'p-po',
              'Private sector':'p-pv','Nonacademic other':'p-pv','Adjunct':'p-pv','Lecturer':'p-pd'};
 const SRCNAME={joe:'JOE', ejm:'EJM'};
+const PLACES = JSON.parse(document.getElementById('joe-places').textContent);
+const METRO_LIST = JSON.parse(document.getElementById('joe-metros').textContent);
+/* The screens flag rather than remove — see merge.py. */
+const FLAGLAB={'senior':'senior role','not-econ':'not econ?','check':'check field / rank'};
 const SRCFULL={joe:'AEA JOE', ejm:'EconJobMarket'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=d=>d==null?'':d<0?'dneg':d<=14?'dsoon':d<=30?'dmid':'';
@@ -457,16 +530,14 @@ function setFooter(){
   const lab=document.getElementById('nf1lab');
   if(SHARED){
     if(lab) lab.textContent='in my fields';
-    f.innerHTML = 'Every AEA JOE listing for the 2026&ndash;27 cycle, refreshed each morning. '
+    f.innerHTML = 'Every listing from the boards above for the 2026&ndash;27 cycle, refreshed each morning. '
       + 'Fit ranks on your fields, then where you would go, then the kind of job &mdash; set those '
-      + 'under <strong>My preferences</strong>. Nothing is ever filtered out by a preference; it '
-      + 'only sorts lower. Your stars, applications and notes are kept by this browser alone: they '
-      + 'are not published with the page, nobody else can see them, and they do not follow you to '
-      + 'another machine unless you copy them across under <strong>Back up or restore</strong>.';
-    const ol=document.getElementById('outlede');
-    if(ol) ol.textContent='Set aside as not economics, or as a rank above assistant level — the same '
-      +'screen for everyone, and nothing to do with your preferences. Nothing is deleted. If one of '
-      +'these looks wrong to you, tell Danny and the rule gets fixed.';
+      + 'on the <strong>Preferences</strong> tab. Nothing is ever filtered out by a preference, and '
+      + 'nothing is screened out of the feed: listings that look senior or non-economics are flagged '
+      + 'and sorted lower, never removed, because that screen is wrong often enough to matter. Your '
+      + 'stars, applications and notes are kept by this browser alone: they are not published with '
+      + 'the page, nobody else can see them, and they do not follow you to another machine unless '
+      + 'you carry them across on the <strong>Backup</strong> tab.';
   } else {
     f.innerHTML = 'Priority ranks on field, then geography, then track. Field tier 1 is JEL J* (labor), '
       + 'N* (economic history), or 00 (open-field search). Economic history is largely advertised off '
@@ -654,33 +725,75 @@ const FIELDS=[
   ['L','Industrial organization'],['O','Development & growth'],['Q','Agricultural & environmental'],
   ['R','Urban & regional'],['C','Econometrics & methods'],['M','Business & marketing'],
   ['P','Economic systems'],['A','General economics'],['Z','Cultural & sports']];
-const US_REGIONS=[
-  ['ne','Northeast',['New York','New Jersey','Pennsylvania','Massachusetts','Connecticut',
-    'Rhode Island','New Hampshire','Vermont','Maine']],
-  ['dc','DC & Mid-Atlantic',['District of Columbia','Maryland','Virginia','Delaware','West Virginia']],
-  ['mw','Midwest',['Illinois','Michigan','Ohio','Wisconsin','Minnesota','Indiana','Iowa','Missouri',
-    'Kansas','Nebraska','North Dakota','South Dakota']],
-  ['so','South',['Florida','Georgia','North Carolina','South Carolina','Tennessee','Alabama',
-    'Mississippi','Louisiana','Texas','Oklahoma','Arkansas','Kentucky']],
-  ['mt','Mountain & Southwest',['Colorado','Utah','Arizona','New Mexico','Nevada','Idaho',
-    'Montana','Wyoming']],
-  ['we','West Coast',['California','Washington','Oregon','Hawaii','Alaska']]];
-const EUROPE=['UNITED KINGDOM','GERMANY','FRANCE','ITALY','SPAIN','NETHERLANDS','SWITZERLAND',
-  'SWEDEN','NORWAY','DENMARK','FINLAND','BELGIUM','AUSTRIA','IRELAND','PORTUGAL','POLAND',
-  'CZECH REPUBLIC','GREECE','HUNGARY','LUXEMBOURG'];
-const REGIONS=US_REGIONS.map(r=>[r[0],r[1]])
-  .concat([['ca','Canada'],['eu','UK & Europe'],['row','Rest of world']]);
 const TRACKS=['Academic TT','Lecturer','Postdoc/Visiting','Policy/Gov','Private sector','Nonacademic other','Adjunct'];
+
+/* ---------- where I would go ----------
+   Built by places.py from the day's own listings, so the countries on offer are the ones
+   that actually have jobs. A place is stored as one of three tokens:
+
+     c:<continent>   the whole continent, including countries not in today's feed
+     k:<COUNTRY>     one country
+     s:<State>       one US state
+
+   Regions (Northeast, Midwest...) are a convenience for ticking nine states at once; they
+   are never stored, so a region cannot come to mean something different from its states. */
+const CONTINENTS = (PLACES.continents||[]);
+const CONT_OF = {};        /* COUNTRY -> continent key */
+const COUNTRY_N = {};      /* COUNTRY -> today's count */
+const CONT_NAME = {};
+CONTINENTS.forEach(c=>{
+  CONT_NAME[c.key]=c.name;
+  c.countries.forEach(k=>{ CONT_OF[k.cc]=c.key; COUNTRY_N[k.cc]=k.n; });
+});
+const US_REGIONS = (PLACES.regions||[]).map(([k,name])=>[k,name,
+  ((CONTINENTS.find(c=>c.key==='na')||{countries:[]}).countries
+     .find(x=>x.cc==='UNITED STATES')||{regions:[]}).regions
+     .filter(r=>r.key===k).flatMap(r=>r.states.map(x=>x.st))]);
+const STATE_REGION = PLACES.stateRegion||{};
+const STATE_N = {};
+US_REGIONS.forEach(([,,states])=>states.forEach(st=>{ STATE_N[st]=0; }));
+((CONTINENTS.find(c=>c.key==='na')||{countries:[]}).countries
+  .find(x=>x.cc==='UNITED STATES')||{regions:[]}).regions
+  .forEach(r=>r.states.forEach(x=>{ STATE_N[x.st]=x.n; }));
+
+const placeName = tok =>
+  tok.startsWith('c:') ? (CONT_NAME[tok.slice(2)]||tok.slice(2))
+  : tok.startsWith('k:') ? prettyCountry(tok.slice(2))
+  : tok.slice(2);
+function prettyCountry(cc){
+  for(const c of CONTINENTS){ const hit=c.countries.find(x=>x.cc===cc); if(hit) return hit.name; }
+  return cc.replace(/\b[A-Z]+\b/g, w=>w[0]+w.slice(1).toLowerCase());
+}
 
 let PREFS = normPrefs(null);
 function normPrefs(p){
   const arr=(v,ok)=>Array.isArray(v)?v.filter(x=>ok.indexOf(x)!==-1):[];
   p = p||{};
+  /* Place tokens are NOT filtered against today's feed. A country with no listings this
+     morning is still a place you would move to, and erasing the tick would quietly undo a
+     decision the viewer made in September. Only obvious junk is dropped. */
+  const places = Array.isArray(p.places)
+    ? p.places.filter(x=>typeof x==='string' && /^[cks]:.+/.test(x)) : [];
   return {fields: arr(p.fields, FIELDS.map(f=>f[0])),
-          regions: arr(p.regions, REGIONS.map(r=>r[0])),
+          places: places.length ? [...new Set(places)] : migrateRegions(p.regions),
           tracks:  arr(p.tracks, TRACKS)};
 }
-function prefsSet(){ return PREFS.fields.length||PREFS.regions.length||PREFS.tracks.length; }
+/* Preferences saved under the old six-US-regions-plus-Canada-plus-Europe model. Regions
+   become their states, Canada and Europe become the tokens that now mean the same thing.
+   "Rest of world" has no successor — it meant "everywhere I did not list", which the new
+   model expresses by ticking nothing there — so it is dropped rather than guessed at. */
+function migrateRegions(old){
+  if(!Array.isArray(old)) return [];
+  const out=[];
+  old.forEach(r=>{
+    const reg=US_REGIONS.find(x=>x[0]===r);
+    if(reg){ reg[2].forEach(st=>out.push('s:'+st)); return; }
+    if(r==='ca') out.push('k:CANADA');
+    if(r==='eu') out.push('c:eu');
+  });
+  return [...new Set(out)];
+}
+function prefsSet(){ return PREFS.fields.length||PREFS.places.length||PREFS.tracks.length; }
 
 /* JEL codes arrive as "J1;J3;C2". The top level is the letter, except the general-search
    code 00, which is how most top departments advertise an open field. */
@@ -693,15 +806,22 @@ function jelTops(s){
   });
   return out;
 }
-function regionOf(d){
-  const st=d.st||'', cc=(d.cc||'').toUpperCase();
-  if(cc==='UNITED STATES'){
-    for(const r of US_REGIONS) if(r[2].indexOf(st)!==-1) return r[0];
-    return 'usother';
-  }
-  if(cc==='CANADA') return 'ca';
-  if(EUROPE.indexOf(cc)!==-1) return 'eu';
-  return 'row';
+/* Tier 1 is a place you ticked. Tier 2 is a place on a continent where you ticked
+   something — near enough to be worth a look, not what you asked for. Tier 3 is the
+   rest of the world. This replaced a rule that read "elsewhere in the US" as tier 2,
+   which was nonsense for anyone whose whole list was European. */
+function geoOf(d){
+  const cc=(d.cc||'').toUpperCase(), st=d.st||'';
+  if(!cc) return 2;                        /* remote, or a location we could not read */
+  const cont=CONT_OF[cc]||'xx';
+  if(PREFS.places.indexOf('c:'+cont)!==-1) return 1;
+  if(PREFS.places.indexOf('k:'+cc)!==-1) return 1;
+  if(st && PREFS.places.indexOf('s:'+st)!==-1) return 1;
+  const touched = PREFS.places.some(t=>
+      t.startsWith('c:') ? t.slice(2)===cont
+    : t.startsWith('k:') ? (CONT_OF[t.slice(2)]||'xx')===cont
+    : cont==='na');                        /* a state token means North America */
+  return touched ? 2 : 3;
 }
 /* Every dimension with nothing chosen returns 2 — neutral — so a half-filled preference
    set still ranks on the parts that were filled in. */
@@ -711,12 +831,12 @@ function fitOf(d){
     const tops=jelTops(d.jel);
     f = tops.some(t=>PREFS.fields.indexOf(t)!==-1) ? 1 : (tops.indexOf('00')!==-1 ? 2 : 3);
   }
-  if(PREFS.regions.length){
-    const r=regionOf(d);
-    g = PREFS.regions.indexOf(r)!==-1 ? 1 : ((d.cc||'').toUpperCase()==='UNITED STATES' ? 2 : 3);
-  }
+  if(PREFS.places.length) g = geoOf(d);
   if(PREFS.tracks.length) tr = PREFS.tracks.indexOf(d.track)!==-1 ? 1 : 3;
-  return {f:f, g:g, tr:tr, score:f*100+g*10+tr};
+  /* Flagged listings are not hidden and not filtered — they just lose every tie, so a
+     Full Professor posting never tops a list of jobs you could actually take. */
+  const pen = (d.flag==='senior'||d.flag==='not-econ') ? 1000 : 0;
+  return {f:f, g:g, tr:tr, score:f*100+g*10+tr+pen};
 }
 function applyScores(){
   if(!SHARED) return;                 /* the personal page keeps the tiers score.py computed */
@@ -746,13 +866,85 @@ function optGroup(title, blurb, items, sel, onto){
   return `<div class="optgroup"><h4>${esc(title)}</h4><p>${esc(blurb)}</p>
     <div class="opts">${opts}</div></div>`;
 }
+const has = tok => PREFS.places.indexOf(tok)!==-1;
+function setTok(tok, on){
+  const at=PREFS.places.indexOf(tok);
+  if(on && at===-1) PREFS.places.push(tok);
+  if(!on && at!==-1) PREFS.places.splice(at,1);
+}
+const countTag = n => `<span class="ct"${n?'':' data-zero=""'}>${n}</span>`;
+
+/* One US region: a checkbox that stands for its states, plus the states themselves.
+   Ticking the region ticks all of them; the region shows as half-filled when only some
+   are on, because pretending otherwise would misreport what is actually stored. */
+function regionBlock(rkey, rname, states, covered){
+  const on = states.every(x=>has('s:'+x.st)), some = !on && states.some(x=>has('s:'+x.st));
+  const n = states.reduce((a,x)=>a+x.n,0);
+  const opts = states.map(x=>
+    `<label class="opt sm"${(covered||has('s:'+x.st))?' data-on=""':''}>
+       <input type="checkbox" data-tok="s:${esc(x.st)}"${(covered||has('s:'+x.st))?' checked':''}
+         ${covered?' disabled':''}><span>${esc(x.st)}</span>${countTag(x.n)}</label>`).join('');
+  return `<details class="reg"><summary>
+      <label class="opt"${(covered||on)?' data-on=""':(some?' data-some=""':'')} onclick="event.stopPropagation()">
+        <input type="checkbox" data-region="${esc(rkey)}"${(covered||on)?' checked':''}
+          ${covered?' disabled':''}><span>${esc(rname)}</span></label>
+      ${countTag(n)}<span class="caret">${states.length} states</span>
+    </summary><div class="opts sub">${opts}</div></details>`;
+}
+
+function continentBlock(c){
+  const whole = has('c:'+c.key);
+  const inner = c.countries.map(k=>{
+    const on = whole || has('k:'+k.cc);
+    const head = `<label class="opt"${on?' data-on=""':''}>
+        <input type="checkbox" data-tok="k:${esc(k.cc)}"${on?' checked':''}${whole?' disabled':''}>
+        <span>${esc(k.name)}</span></label>${countTag(k.n)}`;
+    if(!k.regions) return `<div class="ctry">${head}</div>`;
+    /* The US is the one country worth opening: it is 200 of today's listings and
+       "United States" is not a useful answer to where you would move. */
+    return `<div class="ctry"><div class="ctryhead">${head}</div>
+      <div class="regs">${k.regions.map(r=>
+        regionBlock(r.key, r.name, r.states, on)).join('')}</div></div>`;
+  }).join('');
+  /* Open if it has any of the viewer's ticks, and open North America regardless: it is
+     two thirds of the feed, and a collapsed row reading "217" invites a click nobody
+     should have to make. */
+  const opened = whole || c.key==='na'
+      || c.countries.some(k=>has('k:'+k.cc) || (k.regions||[]).some(r=>r.states.some(x=>has('s:'+x.st))));
+  return `<details class="cont"${opened?' open':''}>
+    <summary>
+      <span class="contname">${esc(c.name)}</span>${countTag(c.n)}
+      <label class="opt sm allof"${whole?' data-on=""':''} onclick="event.stopPropagation()">
+        <input type="checkbox" data-cont="${esc(c.key)}"${whole?' checked':''}>
+        <span>all of it</span></label>
+    </summary><div class="contin">${inner}</div></details>`;
+}
+
+function placesGroup(){
+  /* Anything ticked that has no listing today still needs a home, or the viewer sees
+     their choice vanish and assumes the page lost it. */
+  const shown=new Set();
+  CONTINENTS.forEach(c=>{ shown.add('c:'+c.key);
+    c.countries.forEach(k=>{ shown.add('k:'+k.cc);
+      (k.regions||[]).forEach(r=>r.states.forEach(x=>shown.add('s:'+x.st))); }); });
+  const orphans = PREFS.places.filter(t=>!shown.has(t));
+  return `<div class="optgroup"><h4>Where I would go</h4>
+    <p>Tick a whole continent, or open it and pick countries. The United States opens
+    further, to regions and states. Everywhere else still shows in the list &mdash; it just
+    ranks below the places you chose, and below anywhere on the same continent.</p>
+    <div class="conts">${CONTINENTS.map(continentBlock).join('')}</div>
+    ${orphans.length?`<p class="orphans">Also ticked, with nothing advertised there today:
+      ${orphans.map(t=>`<span class="orph">${esc(placeName(t))}
+        <button type="button" class="orphx" data-tok="${esc(t)}" aria-label="Remove">&times;</button>
+      </span>`).join(' ')}</p>`:''}
+  </div>`;
+}
+
 function renderPrefs(){
   if(!SHARED) return;
-  document.getElementById('prefs').hidden=false;
-  document.getElementById('backup').hidden=false;
   document.getElementById('prefsin').innerHTML =
     optGroup('My fields','Listings carrying one of these JEL codes rank first. Open searches — JEL 00, how most top departments advertise — sit in the middle unless you tick them.',FIELDS,PREFS.fields,'fields')
-    + optGroup('Where I would go','Everywhere else still shows, lower down. US locations outside your picks rank above non-US ones.',REGIONS,PREFS.regions,'regions')
+    + placesGroup()
     + optGroup('What I am looking for','The kind of position. Leave empty if you are open to all of them.',TRACKS,PREFS.tracks,'tracks')
     + `<div class="prefsfoot"><button class="btn" type="button" id="prefsclear">Clear all</button>
        <span>Stored in this browser. Nothing here is sent anywhere or visible to anyone else.</span></div>`;
@@ -763,11 +955,27 @@ function renderPrefs(){
     if(lab){ if(cb.checked) lab.setAttribute('data-on',''); else lab.removeAttribute('data-on'); }
     afterPrefs();
   }));
+  /* Re-render after a place changes: ticking a continent has to grey out its countries,
+     and ticking a state has to move its region to half-filled. */
+  const prefsin=document.getElementById('prefsin');
+  prefsin.addEventListener('change',e=>{
+    const cb=e.target.closest('input[type=checkbox]'); if(!cb) return;
+    if(cb.dataset.tok) setTok(cb.dataset.tok, cb.checked);
+    else if(cb.dataset.cont) setTok('c:'+cb.dataset.cont, cb.checked);
+    else if(cb.dataset.region){
+      const reg=US_REGIONS.find(r=>r[0]===cb.dataset.region);
+      if(reg) reg[2].forEach(st=>setTok('s:'+st, cb.checked));
+    } else return;
+    renderPrefs(); afterPrefs();
+  });
+  prefsin.addEventListener('click',e=>{
+    const x=e.target.closest('.orphx'); if(!x) return;
+    setTok(x.dataset.tok, false); renderPrefs(); afterPrefs();
+  });
   document.getElementById('prefsclear').addEventListener('click',()=>{
     PREFS=normPrefs(null); renderPrefs(); afterPrefs();
   });
   updatePrefSummary();
-  if(!prefsSet()) document.getElementById('prefs').open=true;
 }
 function updatePrefSummary(){
   const el=document.getElementById('prefsum'); if(!el) return;
@@ -776,12 +984,20 @@ function updatePrefSummary(){
     const hit=list.find(x=>(Array.isArray(x)?x[0]:x)===v); return Array.isArray(hit)?hit[1]:hit; });
   const parts=[];
   if(PREFS.fields.length)  parts.push(nm(FIELDS,PREFS.fields).join(', '));
-  if(PREFS.regions.length) parts.push(nm(REGIONS,PREFS.regions).join(', '));
+  if(PREFS.places.length){
+    /* A state-by-state list would run to forty words. Name the whole continents and
+       countries, then count the states. */
+    const big=PREFS.places.filter(t=>!t.startsWith('s:')).map(placeName);
+    const st=PREFS.places.filter(t=>t.startsWith('s:')).length;
+    if(st) big.push(st+(st===1?' US state':' US states'));
+    parts.push(big.join(', '));
+  }
   if(PREFS.tracks.length)  parts.push(PREFS.tracks.join(', '));
   el.textContent = parts.join('  ·  ');
 }
 function afterPrefs(){
   applyScores(); updatePrefSummary(); saveLocal(); maybeSortByFit(); renderTable();
+  if(typeof renderNudge==='function') renderNudge();
 }
 /* Setting a preference should visibly do something. Switch the table to fit order the
    first time it has preferences to work with — but never override a sort the viewer
@@ -1061,17 +1277,15 @@ document.getElementById('soon').innerHTML = SOON.map(d=>{
     <div class="me">${esc(d.track)}${d.loc?' · '+esc(d.loc):''}</div></article>`;
 }).join('') || '<div class="panel"><div class="empty">Nothing closing in the next 7 days.</div></div>';
 
-document.getElementById('outlist').innerHTML = OUT.map(d=>
-  `<div class="outrow"><span class="why">${esc(d.screen)}</span>
-   <strong>${esc(d.inst)}</strong> &mdash; ${esc(d.title)}
-   <span class="in">${esc(d.unit||'')}</span></div>`).join('');
-
 /* ---------- table ---------- */
 const FILTERS=[['track','Academic TT'],['track','Postdoc/Visiting'],['track','Policy/Gov'],
                ['track','Private sector'],
                ['f', SHARED?'My fields':'Core field'],
-               ['g', SHARED?'My regions':'Tier 1 geography'],
-               ['p','Shortlisted']];
+               ['g', SHARED?'My places':'Tier 1 geography'],
+               ['p','Shortlisted']]
+  /* A recall tool, not a ranking one: somebody who wants a big city wants to be sure
+     they have seen all of them, which is a filter's job and a sort key's downfall. */
+  .concat(METRO_LIST.length ? [['m','Major metro']] : []);
 let active=new Set(), sortK='posted', sortA=false;   /* newest posting first */
 
 /* ---------- board picker ---------- */
@@ -1129,11 +1343,13 @@ function renderTable(){
   const tracks=[...active].map(i=>FILTERS[i]).filter(f=>f[0]==='track').map(f=>f[1]);
   const wf=[...active].some(i=>FILTERS[i][0]==='f'), wg=[...active].some(i=>FILTERS[i][0]==='g');
   const wp=[...active].some(i=>FILTERS[i][0]==='p');
+  const wm=[...active].some(i=>FILTERS[i][0]==='m');
   let rows=DATA.filter(d=>{
     if(tracks.length&&!tracks.includes(d.track)) return false;
     if(wf&&d.f!==1) return false;
     if(wg&&d.g!==1) return false;
     if(wp&&!picked(d.id)) return false;
+    if(wm&&!d.metro) return false;
     if(srcSel.size && !srcSel.has(d.src||'joe')) return false;
     if(q&&!(d.inst+' '+d.title+' '+d.unit+' '+d.kw+' '+d.jel+' '+d.loc).toLowerCase().includes(q)) return false;
     return true;
@@ -1156,7 +1372,8 @@ function renderTable(){
         aria-label="Fit: ${fitDots(d.fit)} of 3"><i></i><i></i><i></i></span></td>`:''}
       <td><span class="ti">${esc(d.inst)}</span>${
           d.unit?`<br><span class="in">${esc(d.unit)}</span>`:''}</td>
-      <td>${esc(d.title)}${d.screen==='Check'?'<br><span class="flag">check field / rank</span>':''}</td>
+      <td>${esc(d.title)}${d.flag?`<br><span class="flag" data-f="${esc(d.flag)}"
+          title="${esc(d.why||'')}">${esc(FLAGLAB[d.flag]||d.flag)}</span>`:''}</td>
       <td><span class="pill ${TRACK[d.track]||'p-pv'}">${esc(d.track)}</span></td>
       <td><span class="tier ${d.f===1?'t1':''}">${d.f}</span></td>
       <td><span class="tier ${d.g===1?'t1':''}">${d.g}</span></td>
@@ -1172,6 +1389,12 @@ function renderTable(){
       <div><div class="dl">Materials named in ad</div><div class="dv">${esc(d.mats||'not detected — read the ad')}</div></div>
       <div><div class="dl">Keywords</div><div class="dv">${esc(d.kw||'—')}</div></div>
       <div><div class="dl">Salary</div><div class="dv">${esc(d.sal||'not stated')}</div></div>
+      <div><div class="dl">Where</div><div class="dv">${esc(d.loc||'—')}${
+        d.metro?`<br><span class="in">in or near ${esc(d.metro)}</span>`:''}</div></div>
+      ${d.flag?`<div><div class="dl">Flagged</div><div class="dv"><span class="flag"
+        data-f="${esc(d.flag)}">${esc(FLAGLAB[d.flag]||d.flag)}</span><br>
+        <span class="in">${esc(d.why||'')} — nothing is removed from the feed on this basis,
+        so read the ad and decide for yourself.</span></div></div>`:''}
       <div><div class="dl">Listing</div><div class="dv"><a class="jl" href="${esc(d.url)}" target="_blank" rel="noopener">Open on ${esc(SRCFULL[d.src||'joe']||'the board')} &rarr;</a></div></div>
     </div></td></tr>`).join('')
     : '<tr><td colspan="'+NCOL+'"><div class="empty">No listings match those filters.</div></td></tr>';
@@ -1185,8 +1408,10 @@ function renderTable(){
 function renderAll(){ renderApps(); renderShort(); renderTable(); }
 
 /* ---------- tabs ---------- */
-const TABS=[['t-app','v-app'],['t-short','v-short'],['t-all','v-all'],['t-out','v-out']];
+const TABS=[['t-app','v-app'],['t-short','v-short'],['t-all','v-all'],
+            ['t-prefs','v-prefs'],['t-backup','v-backup']];
 function showTab(t){
+  setTimeout(()=>{ if(typeof renderNudge==='function') renderNudge(); }, 0);
   TABS.forEach(([t2,v2])=>{
     const tab=document.getElementById(t2), view=document.getElementById(v2);
     if(!tab||!view) return;
@@ -1228,7 +1453,30 @@ function restoreUI(){
    BEFORE the first render, or it paints an empty tracker and then jumps. */
 renderDigest();
 renderSourceState();
-if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); }
+/* The landing tab asks for preferences once, and stops asking the moment there are any. */
+function renderNudge(){
+  const n=document.getElementById('prefnudge'); if(!n) return;
+  const onPrefs = !document.getElementById('v-prefs').hidden;
+  n.hidden = !SHARED || !!prefsSet() || onPrefs;
+}
+const goPrefs=document.getElementById('gotoprefs');
+if(goPrefs) goPrefs.addEventListener('click',()=>{ showTab('t-prefs'); saveUI({tab:'t-prefs'});
+  window.scrollTo({top:0,behavior:'smooth'}); });
+
+/* Back to top. The table runs to three hundred rows and the tab strip is the only way
+   back, so it appears once the header has gone. */
+const toTop=document.getElementById('totop');
+if(toTop){
+  let shown=false;
+  const sync=()=>{ const want=window.scrollY>600;
+    if(want!==shown){ shown=want; toTop.hidden=!want; } };
+  addEventListener('scroll', sync, {passive:true});
+  addEventListener('resize', sync, {passive:true});
+  toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  sync();
+}
+
+if(SHARED){ bootLocal(); renderPrefs(); wireBackup(); refreshBackup(); maybeSortByFit(); renderNudge(); }
 else { const th=document.getElementById('th-fit'); if(th) th.remove(); }
 applyScores();
 setFooter();

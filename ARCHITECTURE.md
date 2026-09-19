@@ -9,6 +9,9 @@ Four pieces, each with one job.
 | GitHub Pages | The web server. Serves `index.html` at the repository's Pages URL |
 | Each viewer's browser | That viewer's stars, applications, notes and ranking preferences — and nobody else's |
 
+The page has five tabs: Applications, Shortlist, All listings, Preferences and Backup. There
+is no "Screened out" tab, because nothing is screened out any more — see below.
+
 ## Layout
 
 ```
@@ -16,9 +19,11 @@ index.html                     the page Pages serves (generated — do not hand-
 state/joe_snapshot.json        one entry per listing: fingerprint, first_seen, posted, deadline, src
 state/digest.json              what changed on the last run: new, changed, withdrawn
 pipeline/
-  screens.py                   shared by every board: what counts as economics, what is above
+  screens.py                   shared by every board: what reads as economics, what is above
                                assistant level, which employers are policy, the owner's default tiers
   snapshot.py                  reads the prior snapshot and migrates pre-namespace ids
+  places.py                    the geography picker, built from the day's own listings
+  metro.py + metros.txt        is this job in or near a major metro — an editable judgement list
   fetch.sh                     JOE full XML + every listings page
   posted.py                    JOE_ID -> posting date
   score.py                     parse JOE XML, assign field / geography / track tiers -> joe_rows.json
@@ -113,6 +118,45 @@ failed but the run continues, and `merge.py` builds from JOE alone. Three things
 
 Nobody's stars are affected either way: they live in the browser, keyed by id, and reattach when the
 board comes back.
+
+## The screens flag; they do not remove
+
+`screens.py` decides whether a listing reads as economics and whether it is advertised above
+assistant level. Until September 2026 a listing that failed either test was pulled out of the
+feed into a separate tab. It is not any more, and the reason is worth keeping written down:
+the screen was wrong often enough to matter — it dropped assistant professorships at Berkeley
+as "not economics" — and a listing nobody can see is a listing nobody can correct.
+
+So every listing goes in the one table, carrying a flag:
+
+| flag | means |
+|---|---|
+| *(none)* | reads as an economics job at a rank you could hold |
+| `check` | field or rank is ambiguous — the ad is worth reading |
+| `senior` | advertised above assistant level |
+| `not-econ` | department and title do not read as economics or econ-adjacent |
+
+`senior` and `not-econ` add 1000 to the fit score, so they lose every tie and sit at the
+bottom of a fit-sorted list. They are never filtered, never hidden, and never excluded from
+a count. The default sort is newest-posted-first, so in normal use they appear in date order
+wearing their label.
+
+## Where I would go
+
+Each viewer's places are stored as three kinds of token: `c:<continent>` for a whole
+continent, `k:<COUNTRY>` for one country, `s:<State>` for one US state. US regions
+(Northeast, Midwest) tick nine states at once and are never stored themselves, so a region
+cannot come to mean something different from the states inside it.
+
+Scoring is: a place you ticked is tier 1; anywhere on a continent where you ticked something
+is tier 2; the rest of the world is tier 3. The rule this replaced read "elsewhere in the US"
+as tier 2, which made no sense for anyone whose whole list was European.
+
+`places.py` builds the picker from the day's listings with a count beside every country, so
+the options are places that actually have jobs. Two consequences: the picker changes as the
+feed changes, and a country a viewer ticked is **never** dropped from their saved preferences
+just because it has no listing this morning — it is shown separately as "also ticked, nothing
+advertised there today". A preference set in September still means something in November.
 
 ## How "new" is known
 

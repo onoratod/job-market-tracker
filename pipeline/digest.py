@@ -38,7 +38,7 @@ def brief(jid):
                 unit=r.get('unit', ''), track=r.get('section', ''),
                 dl=(r.get('deadline') or '')[:10], days=r.get('days'),
                 posted=r.get('posted', ''), f=r.get('jtier'), g=r.get('gtier'),
-                ok=r.get('eligible', True), src=r.get('src', 'joe'),
+                flag=r.get('flag', ''), src=r.get('src', 'joe'),
                 url=r.get('url', ''))
 
 WATCHED = [('deadline', 'deadline'), ('title', 'title'), ('inst', 'institution')]
@@ -79,8 +79,10 @@ for jid, was in prior.items():
         withdrawn.append(dict(id=jid, inst=was.get('inst', ''), title=was.get('title', ''),
                               dl=was.get('deadline', '')[:10], src=src, url=url))
 
+# Flagged listings are included: the screens no longer remove anything, and a senior
+# posting closing in three days is still news, it just arrives wearing its label.
 soon = sorted((brief(j) for j, r in rows.items()
-               if r.get('eligible') and r.get('days') is not None and 0 <= r['days'] <= 14),
+               if r.get('days') is not None and 0 <= r['days'] <= 14),
               key=lambda d: d['days'])
 
 added.sort(key=lambda d: (d['days'] if d['days'] is not None else 9999))

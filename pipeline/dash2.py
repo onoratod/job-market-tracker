@@ -10,6 +10,7 @@ Two editions from one template:
 """
 import json, datetime, sys, re
 import os as _os
+from places import places
 
 rows = json.load(open('rows.json'))
 snap = json.load(open('joe_snapshot.json'))
@@ -18,25 +19,26 @@ TODAY = (datetime.date.fromisoformat(_os.environ['JOE_TODAY'])
 CYCLE = '2026-02'
 
 def pack(r):
-    screen = 'Eligible' if r['eligible'] else ('Not econ' if r['discipline']=='Non-econ' else 'Senior only')
-    if r['eligible'] and (r['discipline']=='Check' or r['rank_fit']=='Check rank'): screen='Check'
     return dict(id=r['id'], inst=r['inst'], unit=r['unit'], title=r['title'], track=r['section'],
                 dl=r['deadline'][:10], days=r['days'], posted=(r.get('posted') or None),
                 loc=r['loc'], jel=r['jel'], mats=r['materials'],
-                kw=r['keywords'], sal=r['salary'], f=r['jtier'], g=r['gtier'], screen=screen,
-                ok=r['eligible'], fp=r['fingerprint'],
+                kw=r['keywords'], sal=r['salary'], f=r['jtier'], g=r['gtier'],
+                # The screens flag rather than remove: '' clean, 'check' ambiguous,
+                # 'senior' / 'not-econ' the ones that used to be deleted from the feed.
+                flag=r.get('flag', ''), why=r.get('flag_why', ''), fp=r['fingerprint'],
                 # Raw fields the shared edition scores from in the browser. f/g above are
                 # Danny's tiers, computed in score.py; a classmate's are computed from these.
                 cc=r.get('country',''), st=r.get('state',''),
+                city=r.get('city',''), metro=r.get('metro',''),
                 src=r.get('src','joe'),
                 # The board's own field names, shown on expand so the bucket mapping is
                 # visible rather than something a reader has to take on trust.
                 nat=r.get('fields_native') or [],
                 url=r.get('url',''))
 
-data = [pack(r) for r in rows]
-el   = [d for d in data if d['ok']]
-out  = [d for d in data if not d['ok']]
+# One list. Nothing is held back from the page — see merge.py on why the screens flag
+# instead of removing.
+el = [pack(r) for r in rows]
 # "Closing soon" is the panel you act on today, so it is one week, not one month —
 # a 30-day list is a reading list. The table still carries every deadline.
 SOON_DAYS = 7
@@ -77,14 +79,17 @@ def build(mode, state, outfile):
     TPL = open('page_template.html').read()
     html = (TPL.replace('__MODE__', mode)
                .replace('__DIGEST__', j(DIGEST))
-               .replace('__DATA__', j(el)).replace('__OUT__', j(out)).replace('__SOON__', j(soon))
+               .replace('__DATA__', j(el)).replace('__SOON__', j(soon))
                .replace('__STATE__', j(state)).replace('__PULLED__', TODAY.strftime('%b %-d, %Y'))
                .replace('__BOARDS__', BOARDS).replace('__SOURCES__', j(SOURCES))
                .replace('__NEL__', str(len(el))).replace('__NF1__', str(sum(1 for d in el if d['f']==1)))
-               .replace('__NSOON__', str(len(soon))).replace('__NOUT__', str(len(out))))
+               .replace('__NSOON__', str(len(soon)))
+               .replace('__METROS__', j(sorted({d['metro'] for d in el if d['metro']})))
+               .replace('__PLACES__', j(places(el))))
     open(outfile, 'w').write(html)
-    print(f'{mode:8} -> {outfile}  {len(html):,} bytes | {len(el)} eligible | '
-          f'{len(soon)} soon | {len(out)} screened')
+    nflag = sum(1 for d in el if d['flag'])
+    print(f'{mode:8} -> {outfile}  {len(html):,} bytes | {len(el)} listings | '
+          f'{len(soon)} soon | {nflag} flagged')
     return html
 
 # --- personal edition ---------------------------------------------------------

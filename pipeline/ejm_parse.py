@@ -198,6 +198,22 @@ def parse_list_pages():
     return rows
 
 
+REMOTE = re.compile(r'\b(100%\s*remote|fully remote|job is .*remote|remote (position|work))\b', re.I)
+
+
+def plausible_value(v):
+    """A labelled field on a detail page is short. Anything else is the parse falling
+    through into the body of the page, and must not be stored.
+
+    This guard exists because it already happened: a fully-remote listing put
+    "100% REMOTE." where the address goes, the value ran on into the rest of the page,
+    and nine hundred characters of markup were saved as the listing's city — and then
+    cached in the snapshot, where no later run would ever have recomputed it.
+    """
+    v = str(v or '')
+    return bool(v) and len(v) <= 160 and '\n' not in v
+
+
 def fetch_detail(jid):
     """The listing's own page. Labelled fields, and the only place a US state appears."""
     req = urllib.request.Request(f'{BASE}/positions/{jid}', headers={'User-Agent': UA})
@@ -209,13 +225,17 @@ def fetch_detail(jid):
         if l.rstrip(':').strip() in ('Location of job', 'Degree required', 'Job start date',
                                      'Job duration', 'Letters of reference required'):
             key = l.rstrip(':').strip()
-            if i + 1 < len(lines):
+            if i + 1 < len(lines) and plausible_value(lines[i + 1]):
                 out[key] = lines[i + 1]
     return out
 
 
 def split_address(addr):
     """'... Detroit, Michigan, 48202, United States' -> ('UNITED STATES', 'Michigan', 'Detroit')."""
+    if REMOTE.search(addr or ''):
+        # A remote job has no country to report, and guessing one from whatever text
+        # sits where the address should be is how "100% REMOTE." became a country.
+        return ('', '', 'Remote')
     parts = [p.strip() for p in (addr or '').split(',') if p.strip()]
     if not parts:
         return ('', '', '')
@@ -259,9 +279,15 @@ def main():
         prior = json.load(open('prior_snapshot.json'))
         prior = prior.get('listings', prior)
         for k, v in prior.items():
-            if k.startswith('ejm:') and v.get('cc'):
-                cache[k[4:]] = {'cc': v.get('cc', ''), 'st': v.get('st', ''),
-                                'city': v.get('city', ''), 'start': v.get('start', '')}
+            if not k.startswith('ejm:') or not v.get('cc'):
+                continue
+            # A cached value is never re-derived, so a bad one is permanent unless it is
+            # refused here. Anything that does not look like a place gets dropped and the
+            # detail page is fetched again.
+            if not all(plausible_value(v.get(f)) or not v.get(f) for f in ('cc', 'st', 'city')):
+                continue
+            cache[k[4:]] = {'cc': v.get('cc', ''), 'st': v.get('st', ''),
+                            'city': v.get('city', ''), 'start': v.get('start', '')}
 
     fetched = failed = 0
     for r in listings:
