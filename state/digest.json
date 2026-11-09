@@ -4,207 +4,46 @@
  "first_pull": {},
  "unavailable": [],
  "counts": {
-  "total": 1072,
-  "new": 9,
-  "changed": 1,
-  "withdrawn": 4,
+  "total": 1074,
+  "new": 2,
+  "changed": 0,
+  "withdrawn": 0,
   "closing_soon": 287
  },
  "new": [
   {
-   "id": "joe:111478479",
-   "inst": "Bank of Korea",
-   "title": "Economist",
-   "unit": "",
-   "track": "Policy/Gov",
-   "dl": "2026-11-27",
-   "days": 18,
-   "posted": "2026-11-09",
-   "f": 1,
-   "g": 4,
-   "flag": "",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478479"
-  },
-  {
-   "id": "joe:111478525",
-   "inst": "Grand Rapids Community College",
-   "title": "Assistant Professor of Economics",
-   "unit": "School of Liberal Arts",
+   "id": "ejm:12980",
+   "inst": "University of Bergen",
+   "title": "Assistant professor in economics (tenure track)",
+   "unit": "Department of Economics",
    "track": "Academic TT",
    "dl": "2026-12-01",
    "days": 22,
    "posted": "2026-11-09",
-   "f": 3,
-   "g": 2,
-   "flag": "",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478525"
-  },
-  {
-   "id": "joe:111478467",
-   "inst": "Samsung Global Research",
-   "title": "Research Fellow (Economist / Financial & Corporate Governance Specialist)",
-   "unit": "Business Environment Research Department",
-   "track": "Private sector",
-   "dl": "2026-12-06",
-   "days": 27,
-   "posted": "2026-11-09",
-   "f": 1,
-   "g": 4,
-   "flag": "",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478467"
-  },
-  {
-   "id": "ejm:12986",
-   "inst": "Tampere University",
-   "title": "Postdoctoral Research Fellow in Economics",
-   "unit": "Faculty of Management and Business",
-   "track": "Postdoc/Visiting",
-   "dl": "2026-12-13",
-   "days": 34,
-   "posted": "2026-11-09",
    "f": 1,
    "g": 3,
    "flag": "",
    "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12986"
+   "url": "https://econjobmarket.org/positions/12980"
   },
   {
-   "id": "ejm:12992",
-   "inst": "University of Sydney",
-   "title": "Lecturer/Senior Lecturer (Assistant Professor) Finance",
-   "unit": "Business School",
-   "track": "Lecturer",
-   "dl": "2026-12-14",
-   "days": 35,
+   "id": "ejm:12998",
+   "inst": "SRM University",
+   "title": "Faculty Positions in Economics",
+   "unit": "Economics Department",
+   "track": "Academic TT",
+   "dl": "2027-06-30",
+   "days": 233,
    "posted": "2026-11-09",
-   "f": 3,
+   "f": 2,
    "g": 4,
    "flag": "",
    "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12992"
-  },
-  {
-   "id": "joe:111478359",
-   "inst": "Hitotsubashi University",
-   "title": "Full Professor / Associate Professor / Assistant Professor",
-   "unit": "Institute of Economic Research",
-   "track": "Academic TT",
-   "dl": "2026-12-15",
-   "days": 36,
-   "posted": "2026-11-09",
-   "f": 1,
-   "g": 4,
-   "flag": "",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478359"
-  },
-  {
-   "id": "joe:111478522",
-   "inst": "Vanderbilt University",
-   "title": "Postdoctoral Positions at Vanderbilt University LGBTQ+ with Vanderbilt University LGBTQ+ Policy Lab/Center for Research on Inequality and Health",
-   "unit": "College of Arts and Science",
-   "track": "Postdoc/Visiting",
-   "dl": "2027-01-08",
-   "days": 60,
-   "posted": "2026-11-09",
-   "f": 3,
-   "g": 2,
-   "flag": "check",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478522"
-  },
-  {
-   "id": "joe:111478465",
-   "inst": "Khatam University",
-   "title": "Assistant Professor, Associate Professor, Full Professor",
-   "unit": "Tehran Institute for Advanced Studies",
-   "track": "Academic TT",
-   "dl": "2027-01-31",
-   "days": 83,
-   "posted": "2026-11-09",
-   "f": 1,
-   "g": 4,
-   "flag": "check",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478465"
-  },
-  {
-   "id": "ejm:12972",
-   "inst": "Universitat Ramon Llull",
-   "title": "Assistant/Associate Professor of Management Practice \u2014 Economics",
-   "unit": "Department of Economics, Finance and Accounting, ESADE",
-   "track": "Postdoc/Visiting",
-   "dl": "2027-03-31",
-   "days": 142,
-   "posted": "2026-11-09",
-   "f": 3,
-   "g": 3,
-   "flag": "",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12972"
+   "url": "https://econjobmarket.org/positions/12998"
   }
  ],
- "changed": [
-  {
-   "id": "ejm:12930",
-   "inst": "Hanken School of Economics",
-   "title": "Assistant or Associate Professor (Tenure Track) in Economics",
-   "unit": "Economics and Finance",
-   "track": "Academic TT",
-   "dl": "2026-11-17",
-   "days": 8,
-   "posted": "2026-10-27",
-   "f": 1,
-   "g": 3,
-   "flag": "",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12930",
-   "moved": [
-    {
-     "field": "details",
-     "from": "",
-     "to": ""
-    }
-   ]
-  }
- ],
- "withdrawn": [
-  {
-   "id": "joe:111478227",
-   "inst": "Heidelberg University",
-   "title": "Full professorship (W3) in \u201cAmerican Studies\u201d (f/m/d)",
-   "dl": "2026-11-04",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111478227"
-  },
-  {
-   "id": "joe:111477783",
-   "inst": "NERA",
-   "title": "NERA Experienced Consultant",
-   "dl": "2026-11-08",
-   "src": "joe",
-   "url": "https://www.aeaweb.org/joe/listing.php?JOE_ID=2026-02_111477783"
-  },
-  {
-   "id": "ejm:12606",
-   "inst": "University of Texas at Austin",
-   "title": "International Economic Policy (Assistant/Advanced Assistant Professor)",
-   "dl": "2026-11-08",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12606"
-  },
-  {
-   "id": "ejm:12791",
-   "inst": "Georgetown University",
-   "title": "Faculty Position in International Economics, Open Rank",
-   "dl": "2026-10-15",
-   "src": "ejm",
-   "url": "https://econjobmarket.org/positions/12791"
-  }
- ],
+ "changed": [],
+ "withdrawn": [],
  "closing_soon": [
   {
    "id": "joe:111478100",

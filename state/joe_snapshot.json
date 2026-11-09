@@ -3,7 +3,7 @@
  "pulled": "2026-11-09",
  "sources": {
   "ejm": {
-   "count": 337,
+   "count": 339,
    "last_seen": "2026-11-09"
   },
   "joe": {
@@ -3156,6 +3156,20 @@
    "cc": "PORTUGAL",
    "st": "",
    "city": "Cascais",
+   "start": ""
+  },
+  "ejm:12980": {
+   "fingerprint": "0914f9aa18e7f738",
+   "src": "ejm",
+   "first_seen": "2026-11-09",
+   "last_seen": "2026-11-09",
+   "deadline": "2026-12-01",
+   "posted": "2026-11-09",
+   "title": "Assistant professor in economics (tenure track)",
+   "inst": "University of Bergen",
+   "cc": "NORWAY",
+   "st": "",
+   "city": "Bergen",
    "start": ""
   },
   "ejm:12967": {
@@ -7217,6 +7231,20 @@
    "posted": "2026-10-05",
    "title": "Assistant, Associate or Full Professor",
    "inst": "The American University in Cairo"
+  },
+  "ejm:12998": {
+   "fingerprint": "057d7f252791648b",
+   "src": "ejm",
+   "first_seen": "2026-11-09",
+   "last_seen": "2026-11-09",
+   "deadline": "2027-06-30",
+   "posted": "2026-11-09",
+   "title": "Faculty Positions in Economics",
+   "inst": "SRM University",
+   "cc": "INDIA",
+   "st": "",
+   "city": "Mangalagiri Mandal",
+   "start": ""
   },
   "joe:111477855": {
    "fingerprint": "2ae8729d0f36ea93",
